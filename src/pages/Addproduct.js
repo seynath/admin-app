@@ -46,6 +46,7 @@ const Addproduct = () => {
   const imgState = useSelector((state) => state.upload.images);
   const newProduct = useSelector((state) => state.product);
   const { isSuccess, isError, isLoading, createdProduct } = newProduct;
+
   useEffect(() => {
     if (isSuccess && createdProduct) {
       toast.success("Product Added Successfullly!");
@@ -55,6 +56,7 @@ const Addproduct = () => {
     }
   }, [isSuccess, isError, isLoading]);
   const coloropt = [];
+  
   colorState.forEach((i) => {
     coloropt.push({
       label: i.title,
@@ -73,6 +75,7 @@ const Addproduct = () => {
     formik.values.color = color ? color : " ";
     formik.values.images = img;
   }, [color, img]);
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -95,10 +98,13 @@ const Addproduct = () => {
       }, 3000);
     },
   });
+
   const handleColors = (e) => {
     setColor(e);
     console.log(color);
   };
+
+
   return (
     <div>
       <h3 className="mb-4 title">Add Product</h3>

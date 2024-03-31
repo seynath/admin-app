@@ -15,6 +15,7 @@ let schema = yup.object().shape({
   title: yup.string().required("Category Name is Required"),
 });
 const Addcat = () => {
+
   const dispatch = useDispatch();
   const location = useLocation();
   const getPCatId = location.pathname.split("/")[3];
@@ -28,6 +29,7 @@ const Addcat = () => {
     categoryName,
     updatedCategory,
   } = newCategory;
+
   useEffect(() => {
     if (getPCatId !== undefined) {
       dispatch(getAProductCategory(getPCatId));
@@ -47,6 +49,8 @@ const Addcat = () => {
       toast.error("Something Went Wrong!");
     }
   }, [isSuccess, isError, isLoading]);
+
+  
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {

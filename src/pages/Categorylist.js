@@ -49,7 +49,7 @@ const Categorylist = () => {
   for (let i = 0; i < pCatStat.length; i++) {
     data1.push({
       key: i + 1,
-      name: pCatStat[i].title,
+      name: pCatStat[i].cat_name,
       action: (
         <>
           <Link
