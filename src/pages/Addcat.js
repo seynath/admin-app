@@ -21,13 +21,9 @@ const Addcat = () => {
   const getPCatId = location.pathname.split("/")[3];
   const navigate = useNavigate();
   const newCategory = useSelector((state) => state.pCategory);
-  const {
-    isSuccess,
+  const { isSuccess,
     isError,
-    isLoading,
-    createdCategory,
-    categoryName,
-    updatedCategory,
+    isLoading, createdCategory, categoryName, updatedCategory,
   } = newCategory;
 
   useEffect(() => {
@@ -37,6 +33,8 @@ const Addcat = () => {
       dispatch(resetState());
     }
   }, [getPCatId]);
+
+  
   useEffect(() => {
     if (isSuccess && createdCategory) {
       toast.success("Category Added Successfullly!");

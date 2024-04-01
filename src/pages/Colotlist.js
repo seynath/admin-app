@@ -38,22 +38,23 @@ const Colorlist = () => {
     dispatch(getColors());
   }, []);
   const colorState = useSelector((state) => state.color.colors);
+  console.log(colorState)
   const data1 = [];
   for (let i = 0; i < colorState.length; i++) {
     data1.push({
       key: i + 1,
-      name: colorState[i].title,
+      name: colorState[i].col_name,
       action: (
         <>
           <Link
-            to={`/admin/color/${colorState[i]._id}`}
+            to={`/admin/color/${colorState[i].col_id}`}
             className=" fs-3 text-danger"
           >
             <BiEdit />
           </Link>
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"
-            onClick={() => showModal(colorState[i]._id)}
+            onClick={() => showModal(colorState[i].col_id)}
           >
             <AiFillDelete />
           </button>

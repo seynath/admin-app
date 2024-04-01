@@ -7,25 +7,42 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { getBrands } from "../features/brand/brandSlice";
+// import { getBrands } from "../features/brand/brandSlice";
 import { getCategories } from "../features/pcategory/pcategorySlice";
 import { getColors } from "../features/color/colorSlice";
 import { Select } from "antd";
 import Dropzone from "react-dropzone";
-import { delImg, uploadImg } from "../features/upload/uploadSlice";
+// import { FormData } from "formdata-node";
+
+// import { delImg, uploadImg } from "../features/upload/uploadSlice";
 import { createProducts, resetState } from "../features/product/productSlice";
+// let schema = yup.object().shape({
+//   title: yup.string().required("Title is Required"),
+//   description: yup.string().required("Description is Required"),
+//   price: yup.number().required("Price is Required"),
+//   brand: yup.string().required("Brand is Required"),
+//   category: yup.number().required("Category is Required"),
+//   // tags: yup.string().required("Tag is Required"),
+//   color: yup
+//     .array()
+//     .min(1, "Pick at least one color")
+//     .required("Color is Required"),
+//   quantity: yup.number().required("Quantity is Required"),
+// });
+
 let schema = yup.object().shape({
   title: yup.string().required("Title is Required"),
   description: yup.string().required("Description is Required"),
   price: yup.number().required("Price is Required"),
   brand: yup.string().required("Brand is Required"),
-  category: yup.string().required("Category is Required"),
-  tags: yup.string().required("Tag is Required"),
+  category: yup.number().required("Category is Required"),
+  // tags: yup.string().required("Tag is Required"),
   color: yup
     .array()
     .min(1, "Pick at least one color")
     .required("Color is Required"),
   quantity: yup.number().required("Quantity is Required"),
+  images: yup.mixed().required("Images are Required"), // Add this to validate images
 });
 
 const Addproduct = () => {
@@ -35,15 +52,15 @@ const Addproduct = () => {
   const [images, setImages] = useState([]);
   console.log(color);
   useEffect(() => {
-    dispatch(getBrands());
+    // dispatch(getBrands());
     dispatch(getCategories());
     dispatch(getColors());
   }, []);
 
-  const brandState = useSelector((state) => state.brand.brands);
+  // const brandState = useSelector((state) => state.brand.brands);
   const catState = useSelector((state) => state.pCategory.pCategories);
   const colorState = useSelector((state) => state.color.colors);
-  const imgState = useSelector((state) => state.upload.images);
+  // const imgState = useSelector((state) => state.upload.images);
   const newProduct = useSelector((state) => state.product);
   const { isSuccess, isError, isLoading, createdProduct } = newProduct;
 
@@ -55,42 +72,86 @@ const Addproduct = () => {
       toast.error("Something Went Wrong!");
     }
   }, [isSuccess, isError, isLoading]);
+
   const coloropt = [];
-  
+
   colorState.forEach((i) => {
     coloropt.push({
-      label: i.title,
-      value: i._id,
+      label: i.col_name,
+      value: i.col_id,
     });
   });
-  const img = [];
-  imgState.forEach((i) => {
-    img.push({
-      public_id: i.public_id,
-      url: i.url,
-    });
-  });
+  // const img = [];
+  // imgState.forEach((i) => {
+  //   img.push({
+  //     public_id: i.public_id,
+  //     url: i.url,
+  //   });
+  // });
+
+  // useEffect(() => {
+  //   formik.values.color = color ? color : " ";
+  //   formik.values.images = img;
+  // }, [color, img]);
 
   useEffect(() => {
     formik.values.color = color ? color : " ";
-    formik.values.images = img;
-  }, [color, img]);
+  }, [color]);
+
+  useEffect(() => {
+    formik.setFieldValue("images", images);
+  }, [images]);
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     title: "",
+  //     description: "",
+  //     brand: "",
+  //     price: "",
+  //     category: "",
+  //     // tags: "",
+  //     color: "",
+  //     quantity: "",
+  //     // images: "",
+  //   },
+  //   validationSchema: schema,
+  //   onSubmit: (values) => {
+  //     dispatch(createProducts(values));
+  //     formik.resetForm();
+  //     setColor(null);
+  //     setTimeout(() => {
+  //       dispatch(resetState());
+  //     }, 3000);
+  //   },
+  // });
 
   const formik = useFormik({
     initialValues: {
       title: "",
       description: "",
-      price: "",
       brand: "",
+      price: "",
       category: "",
-      tags: "",
-      color: "",
+      // tags: "",
+      color: [], // Change this to an array
       quantity: "",
-      images: "",
+      images: [], // Add this to handle images
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      dispatch(createProducts(values));
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("description", values.description);
+      formData.append("brand", values.brand);
+      formData.append("price", values.price);
+      formData.append("category", values.category);
+      // formData.append('tags', values.tags);
+      formData.append("color", JSON.stringify(values.color)); // Convert color to JSON string
+      formData.append("quantity", values.quantity);
+      for (let i = 0; i < values.images.length; i++) {
+        formData.append("images", values.images[i]);
+      }
+      dispatch(createProducts(formData));
       formik.resetForm();
       setColor(null);
       setTimeout(() => {
@@ -103,7 +164,6 @@ const Addproduct = () => {
     setColor(e);
     console.log(color);
   };
-
 
   return (
     <div>
@@ -146,7 +206,16 @@ const Addproduct = () => {
           <div className="error">
             {formik.touched.price && formik.errors.price}
           </div>
-          <select
+          <CustomInput
+            type="text"
+            label="Enter Product Brand"
+            name="brand"
+            onChng={formik.handleChange("brand")}
+            onBlr={formik.handleBlur("brand")}
+            val={formik.values.brand}
+          />
+
+          {/* <select
             name="brand"
             onChange={formik.handleChange("brand")}
             onBlur={formik.handleBlur("brand")}
@@ -162,7 +231,8 @@ const Addproduct = () => {
                 </option>
               );
             })}
-          </select>
+          </select> */}
+
           <div className="error">
             {formik.touched.brand && formik.errors.brand}
           </div>
@@ -177,8 +247,8 @@ const Addproduct = () => {
             <option value="">Select Category</option>
             {catState.map((i, j) => {
               return (
-                <option key={j} value={i.title}>
-                  {i.title}
+                <option key={j} value={i.cat_id}>
+                  {i.cat_name}
                 </option>
               );
             })}
@@ -186,7 +256,7 @@ const Addproduct = () => {
           <div className="error">
             {formik.touched.category && formik.errors.category}
           </div>
-          <select
+          {/* <select
             name="tags"
             onChange={formik.handleChange("tags")}
             onBlur={formik.handleBlur("tags")}
@@ -203,7 +273,7 @@ const Addproduct = () => {
           </select>
           <div className="error">
             {formik.touched.tags && formik.errors.tags}
-          </div>
+          </div> */}
 
           <Select
             mode="multiple"
@@ -229,6 +299,43 @@ const Addproduct = () => {
             {formik.touched.quantity && formik.errors.quantity}
           </div>
           <div className="bg-white border-1 p-5 text-center">
+            {/* <Dropzone onDrop={(acceptedFiles) => setImages(acceptedFiles)}> */}
+            <Dropzone onDrop={(acceptedFiles) => setImages(acceptedFiles)}>
+              {({ getRootProps, getInputProps }) => (
+                <section>
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <p>
+                      Drag 'n' drop some files here, or click to select files
+                    </p>
+                  </div>
+                </section>
+              )}
+            </Dropzone>
+          </div>
+
+          <div className="showimages d-flex flex-wrap gap-3">
+            {images.map((image, index) => (
+              <div className="position-relative" key={index}>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setImages(images.filter((img) => img !== image))
+                  }
+                  className="btn-close position-absolute"
+                  style={{ top: "10px", right: "10px" }}
+                ></button>
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt=""
+                  width={200}
+                  height={200}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* <div className="bg-white border-1 p-5 text-center">
             <Dropzone
               onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}
             >
@@ -258,7 +365,7 @@ const Addproduct = () => {
                 </div>
               );
             })}
-          </div>
+          </div> */}
           <button
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"

@@ -51,6 +51,8 @@ const Addcolor = () => {
     enableReinitialize: true,
     initialValues: {
       title: colorName || "",
+      code: "",
+
     },
     validationSchema: schema,
     onSubmit: (values) => {
@@ -77,10 +79,18 @@ const Addcolor = () => {
           <CustomInput
             type="color"
             label="Enter Product Color"
+            onChng={formik.handleChange("code")}
+            onBlr={formik.handleBlur("code")}
+            val={formik.values.code}
+            id="color"
+          />
+          <CustomInput
+            type="text"
+            label="Enter Color Name"
             onChng={formik.handleChange("title")}
             onBlr={formik.handleBlur("title")}
             val={formik.values.title}
-            id="color"
+            id="input-color"
           />
           <div className="error">
             {formik.touched.title && formik.errors.title}

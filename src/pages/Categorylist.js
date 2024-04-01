@@ -45,6 +45,7 @@ const Categorylist = () => {
     dispatch(getCategories());
   }, []);
   const pCatStat = useSelector((state) => state.pCategory.pCategories);
+  console.log(pCatStat);
   const data1 = [];
   for (let i = 0; i < pCatStat.length; i++) {
     data1.push({
@@ -53,14 +54,14 @@ const Categorylist = () => {
       action: (
         <>
           <Link
-            to={`/admin/category/${pCatStat[i]._id}`}
+            to={`/admin/category/${pCatStat[i].cat_id}`}
             className=" fs-3 text-danger"
           >
             <BiEdit />
           </Link>
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"
-            onClick={() => showModal(pCatStat[i]._id)}
+            onClick={() => showModal(pCatStat[i].cat_id)}
           >
             <AiFillDelete />
           </button>

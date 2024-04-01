@@ -11,6 +11,7 @@ let schema = yup.object().shape({
     .string()
     .email("Email should be valid")
     .required("Email is Required"),
+
   password: yup.string().required("Password is Required"),
 });
 const Login = () => {
@@ -38,10 +39,9 @@ const Login = () => {
     } else {
       navigate("");
     }
-  }, [user, isError, isSuccess, isLoading]);
-  
-  return (
+  }, [user, isError, isSuccess, isLoading, navigate]);
 
+  return (
     <div className="py-5" style={{ background: "#ffd333", minHeight: "100vh" }}>
       <br />
       <br />
@@ -52,7 +52,7 @@ const Login = () => {
         <h3 className="text-center title">Login</h3>
         <p className="text-center">Login to your account to continue.</p>
         <div className="error text-center">
-          {message.message == "Rejected" ? "You are not an Admin" : ""}
+          {message.message === "Rejected" ? "You are not an Admin" : ""}
         </div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput
