@@ -5,10 +5,10 @@ import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deleteABrand,
-  getBrands,
+  deleteASize,
+  getSizes,
   resetState,
-} from "../features/brand/brandSlice";
+} from "../features/size/sizeSlice";
 import CustomModal from "../components/CustomModal";
 
 const columns = [
@@ -27,12 +27,12 @@ const columns = [
   },
 ];
 
-const Brandlist = () => {
+const Sizelist = () => {
   const [open, setOpen] = useState(false);
-  const [brandId, setbrandId] = useState("");
+  const [sizeId, setSizeId] = useState("");
   const showModal = (e) => {
     setOpen(true);
-    setbrandId(e);
+    setSizeId(e);
   };
 
   const hideModal = () => {
@@ -41,25 +41,25 @@ const Brandlist = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(resetState());
-    dispatch(getBrands());
+    dispatch(getSizes());
   }, []);
-  const brandState = useSelector((state) => state.brand.brands);
+  const sizeState = useSelector((state) => state.size.sizes);
   const data1 = [];
-  for (let i = 0; i < brandState.length; i++) {
+  for (let i = 0; i < sizeState.length; i++) {
     data1.push({
-      key: i + 1,
-      name: brandState[i].title,
+      key: sizeState[i].size_id,
+      name: sizeState[i].size_name,
       action: (
         <>
           <Link
-            to={`/admin/brand/${brandState[i]._id}`}
+            to={`/admin/size/${sizeState[i]._id}`}
             className=" fs-3 text-danger"
           >
             <BiEdit />
           </Link>
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"
-            onClick={() => showModal(brandState[i]._id)}
+            onClick={() => showModal(sizeState[i]._id)}
           >
             <AiFillDelete />
           </button>
@@ -67,12 +67,12 @@ const Brandlist = () => {
       ),
     });
   }
-  const deleteBrand = (e) => {
-    dispatch(deleteABrand(e));
+  const deleteSize = (e) => {
+    dispatch(deleteASize(e));
 
     setOpen(false);
     setTimeout(() => {
-      dispatch(getBrands());
+      dispatch(getSizes());
     }, 100);
   };
   return (
@@ -85,7 +85,7 @@ const Brandlist = () => {
         hideModal={hideModal}
         open={open}
         performAction={() => {
-          deleteBrand(brandId);
+          deleteSize(sizeId);
         }}
         title="Are you sure you want to delete this brand?"
       />
@@ -93,4 +93,4 @@ const Brandlist = () => {
   );
 };
 
-export default Brandlist;
+export default Sizelist;

@@ -16,6 +16,7 @@ import Dropzone from "react-dropzone";
 
 // import { delImg, uploadImg } from "../features/upload/uploadSlice";
 import { createProducts, resetState } from "../features/product/productSlice";
+import { getSizes } from "../features/size/sizeSlice";
 // let schema = yup.object().shape({
 //   title: yup.string().required("Title is Required"),
 //   description: yup.string().required("Description is Required"),
@@ -41,6 +42,7 @@ let schema = yup.object().shape({
     .array()
     .min(1, "Pick at least one color")
     .required("Color is Required"),
+  size: yup.array(),
   quantity: yup.number().required("Quantity is Required"),
   images: yup.mixed().required("Images are Required"), // Add this to validate images
 });
@@ -50,16 +52,19 @@ const Addproduct = () => {
   const navigate = useNavigate();
   const [color, setColor] = useState([]);
   const [images, setImages] = useState([]);
+  const [size, setSize] = useState([]);
   console.log(color);
   useEffect(() => {
     // dispatch(getBrands());
     dispatch(getCategories());
     dispatch(getColors());
+    dispatch(getSizes());
   }, []);
 
   // const brandState = useSelector((state) => state.brand.brands);
   const catState = useSelector((state) => state.pCategory.pCategories);
   const colorState = useSelector((state) => state.color.colors);
+  const sizeState = useSelector((state) => state.size.sizes);
   // const imgState = useSelector((state) => state.upload.images);
   const newProduct = useSelector((state) => state.product);
   const { isSuccess, isError, isLoading, createdProduct } = newProduct;
@@ -78,9 +83,19 @@ const Addproduct = () => {
   colorState.forEach((i) => {
     coloropt.push({
       label: i.col_name,
-      value: i.col_id,
+      value: i.col_code,
     });
   });
+
+  const sizeopt = [];
+
+  sizeState.forEach((i) => {
+    sizeopt.push({
+      label: i.size_name,
+      value: i.size_id,
+    });
+  });
+
   // const img = [];
   // imgState.forEach((i) => {
   //   img.push({
@@ -97,6 +112,10 @@ const Addproduct = () => {
   useEffect(() => {
     formik.values.color = color ? color : " ";
   }, [color]);
+
+  useEffect(() => {
+    formik.values.size = size ? size : " ";
+  }, [size]);
 
   useEffect(() => {
     formik.setFieldValue("images", images);
@@ -134,6 +153,7 @@ const Addproduct = () => {
       category: "",
       // tags: "",
       color: [], // Change this to an array
+      size: [],
       quantity: "",
       images: [], // Add this to handle images
     },
@@ -147,6 +167,7 @@ const Addproduct = () => {
       formData.append("category", values.category);
       // formData.append('tags', values.tags);
       formData.append("color", JSON.stringify(values.color)); // Convert color to JSON string
+      formData.append("size", JSON.stringify(values.size));
       formData.append("quantity", values.quantity);
       for (let i = 0; i < values.images.length; i++) {
         formData.append("images", values.images[i]);
@@ -163,6 +184,11 @@ const Addproduct = () => {
   const handleColors = (e) => {
     setColor(e);
     console.log(color);
+  };
+
+  const handleSizes = (e) => {
+    setSize(e);
+    console.log(size);
   };
 
   return (
@@ -256,6 +282,7 @@ const Addproduct = () => {
           <div className="error">
             {formik.touched.category && formik.errors.category}
           </div>
+
           {/* <select
             name="tags"
             onChange={formik.handleChange("tags")}
@@ -275,6 +302,7 @@ const Addproduct = () => {
             {formik.touched.tags && formik.errors.tags}
           </div> */}
 
+          {/* Colors */}
           <Select
             mode="multiple"
             allowClear
@@ -284,9 +312,26 @@ const Addproduct = () => {
             onChange={(i) => handleColors(i)}
             options={coloropt}
           />
+
           <div className="error">
             {formik.touched.color && formik.errors.color}
           </div>
+
+          {/* Sizes */}
+          <Select
+            mode="multiple"
+            allowClear
+            className="w-100"
+            placeholder="Select Sizes"
+            defaultValue={size}
+            onChange={(i) => handleSizes(i)}
+            options={sizeopt}
+          />
+
+          <div className="error">
+            {formik.touched.size && formik.errors.size}
+          </div>
+
           <CustomInput
             type="number"
             label="Enter Product Quantity"
@@ -306,7 +351,7 @@ const Addproduct = () => {
                   <div {...getRootProps()}>
                     <input {...getInputProps()} />
                     <p>
-                      Drag 'n' drop some files here, or click to select files
+                      Drag & drop some files here, or click to select files
                     </p>
                   </div>
                 </section>

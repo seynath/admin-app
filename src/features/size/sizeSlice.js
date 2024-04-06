@@ -1,52 +1,52 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
-import brandService from "./brandService";
+import sizeService from "./sizeService";
 
-export const getBrands = createAsyncThunk(
-  "brand/get-brands",
+export const getSizes = createAsyncThunk(
+  "size/get-sizes",
   async (thunkAPI) => {
     try {
-      return await brandService.getBrands();
+      return await sizeService.getSizes();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const getABrand = createAsyncThunk(
-  "brand/get-brand",
+export const getASize = createAsyncThunk(
+  "size/get-size",
   async (id, thunkAPI) => {
     try {
-      return await brandService.getBrand(id);
+      return await sizeService.getSize(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const createBrand = createAsyncThunk(
-  "brand/create-brand",
-  async (brandData, thunkAPI) => {
+export const createSize = createAsyncThunk(
+  "size/create-size",
+  async (sizeData, thunkAPI) => {
     try {
-      return await brandService.createBrand(brandData);
+      return await sizeService.createSize(sizeData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const updateABrand = createAsyncThunk(
-  "brand/update-brand",
-  async (brand, thunkAPI) => {
+export const updateASize = createAsyncThunk(
+  "size/update-size",
+  async (size, thunkAPI) => {
     try {
-      return await brandService.updateBrand(brand);
+      return await sizeService.updateSize(size);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-export const deleteABrand = createAsyncThunk(
-  "brand/delete-brand",
+export const deleteASize = createAsyncThunk(
+  "size/delete-size",
   async (id, thunkAPI) => {
     try {
-      return await brandService.deleteBrand(id);
+      return await sizeService.deleteSize(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -56,88 +56,88 @@ export const deleteABrand = createAsyncThunk(
 export const resetState = createAction("Reset_all");
 
 const initialState = {
-  brands: [],
+  sizes: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
 };
-export const brandSlice = createSlice({
-  name: "brands",
+export const sizeSlice = createSlice({
+  name: "sizes",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getBrands.pending, (state) => {
+      .addCase(getSizes.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getBrands.fulfilled, (state, action) => {
+      .addCase(getSizes.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.brands = action.payload;
+        state.sizes = action.payload;
       })
-      .addCase(getBrands.rejected, (state, action) => {
+      .addCase(getSizes.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(createBrand.pending, (state) => {
+      .addCase(createSize.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createBrand.fulfilled, (state, action) => {
+      .addCase(createSize.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.createdBrand = action.payload;
+        state.createdSize = action.payload;
       })
-      .addCase(createBrand.rejected, (state, action) => {
+      .addCase(createSize.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(getABrand.pending, (state) => {
+      .addCase(getASize.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getABrand.fulfilled, (state, action) => {
+      .addCase(getASize.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.brandName = action.payload.title;
+        state.sizeName = action.payload.title;
       })
-      .addCase(getABrand.rejected, (state, action) => {
+      .addCase(getASize.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(updateABrand.pending, (state) => {
+      .addCase(updateASize.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateABrand.fulfilled, (state, action) => {
+      .addCase(updateASize.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.updatedBrand = action.payload;
+        state.updatedSize = action.payload;
       })
-      .addCase(updateABrand.rejected, (state, action) => {
+      .addCase(updateASize.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(deleteABrand.pending, (state) => {
+      .addCase(deleteASize.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteABrand.fulfilled, (state, action) => {
+      .addCase(deleteASize.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.deletedBrand = action.payload;
+        state.deletedSize = action.payload;
       })
-      .addCase(deleteABrand.rejected, (state, action) => {
+      .addCase(deleteASize.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
@@ -147,4 +147,4 @@ export const brandSlice = createSlice({
   },
 });
 
-export default brandSlice.reducer;
+export default sizeSlice.reducer;

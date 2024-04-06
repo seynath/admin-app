@@ -17,6 +17,10 @@ const columns = [
     dataIndex: "name",
   },
   {
+    title: "Color Code",
+    dataIndex: "code",
+  },
+  {
     title: "Action",
     dataIndex: "action",
   },
@@ -39,22 +43,24 @@ const Colorlist = () => {
   }, []);
   const colorState = useSelector((state) => state.color.colors);
   console.log(colorState)
+
   const data1 = [];
   for (let i = 0; i < colorState.length; i++) {
     data1.push({
       key: i + 1,
       name: colorState[i].col_name,
+      code: colorState[i].col_code,
       action: (
         <>
           <Link
-            to={`/admin/color/${colorState[i].col_id}`}
+            to={`/admin/color/${colorState[i].col_code}`}
             className=" fs-3 text-danger"
           >
             <BiEdit />
           </Link>
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"
-            onClick={() => showModal(colorState[i].col_id)}
+            onClick={() => showModal(colorState[i].col_code)}
           >
             <AiFillDelete />
           </button>

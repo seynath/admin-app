@@ -66,28 +66,28 @@ const MainLayout = () => {
             {
               key: "Catalog",
               icon: <AiOutlineShoppingCart className="fs-4" />,
-              label: "Catalog",
+              label: "Manage Product",
               children: [
                 {
                   key: "product",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Add Product",
+                  label: "Product",
                 },
                 {
                   key: "list-product",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
                   label: "Product List",
                 },
-                // {
-                //   key: "brand",
-                //   icon: <SiBrandfolder className="fs-4" />,
-                //   label: "Brand",
-                // },
-                // {
-                //   key: "list-brand",
-                //   icon: <SiBrandfolder className="fs-4" />,
-                //   label: "Brand List ",
-                // },
+                {
+                  key: "size",
+                  icon: <SiBrandfolder className="fs-4" />,
+                  label: "Size",
+                },
+                {
+                  key: "list-size",
+                  icon: <SiBrandfolder className="fs-4" />,
+                  label: "Size List ",
+                },
                 {
                   key: "category",
                   icon: <BiCategoryAlt className="fs-4" />,
@@ -113,7 +113,7 @@ const MainLayout = () => {
             {
               key: "orders",
               icon: <FaClipboardList className="fs-4" />,
-              label: "Orders",
+              label: "Manage Orders",
             },
             {
               key: "marketing",

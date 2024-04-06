@@ -49,8 +49,9 @@ const Categorylist = () => {
   const data1 = [];
   for (let i = 0; i < pCatStat.length; i++) {
     data1.push({
-      key: i + 1,
+      key: pCatStat[i].cat_id,
       name: pCatStat[i].cat_name,
+      
       action: (
         <>
           <Link

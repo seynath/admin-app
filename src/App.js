@@ -12,13 +12,13 @@ import Orders from "./pages/Orders";
 import Customers from "./pages/Customers";
 import Colorlist from "./pages/Colotlist";
 import Categorylist from "./pages/Categorylist";
-import Brandlist from "./pages/Brandlist";
+import Sizelist from "./pages/Sizelist";
 import Productlist from "./pages/Productlist";
 import Addblog from "./pages/Addblog";
 import Addblogcat from "./pages/Addblogcat";
 import Addcolor from "./pages/Addcolor";
 import Addcat from "./pages/Addcat";
-import Addbrand from "./pages/Addbrand";
+import AddSize from "./pages/AddSize";
 import Addproduct from "./pages/Addproduct";
 import Couponlist from "./pages/Couponlist";
 import AddCoupon from "./pages/AddCoupon";
@@ -56,9 +56,9 @@ function App() {
           <Route path="list-category" element={<Categorylist />} />
           <Route path="category" element={<Addcat />} />
           <Route path="category/:id" element={<Addcat />} />
-          <Route path="list-brand" element={<Brandlist />} />
-          <Route path="brand" element={<Addbrand />} />
-          <Route path="brand/:id" element={<Addbrand />} />
+          <Route path="list-size" element={<Sizelist />} />
+          <Route path="size" element={<AddSize />} />
+          <Route path="size/:id" element={<AddSize />} />
           <Route path="list-product" element={<Productlist />} />
           <Route path="product" element={<Addproduct />} />
           <Route path="supplier" element={<AddSupplier/>} />
