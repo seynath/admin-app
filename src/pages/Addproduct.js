@@ -34,17 +34,18 @@ import { getSizes } from "../features/size/sizeSlice";
 let schema = yup.object().shape({
   title: yup.string().required("Title is Required"),
   description: yup.string().required("Description is Required"),
-  price: yup.number().required("Price is Required"),
+  // price: yup.number().required("Price is Required"),
   brand: yup.string().required("Brand is Required"),
   category: yup.number().required("Category is Required"),
   // tags: yup.string().required("Tag is Required"),
-  color: yup
-    .array()
-    .min(1, "Pick at least one color")
-    .required("Color is Required"),
-  size: yup.array(),
-  quantity: yup.number().required("Quantity is Required"),
+  // color: yup
+  //   .array()
+  //   .min(1, "Pick at least one color")
+  //   .required("Color is Required"),
+  // size: yup.array(),
+  // quantity: yup.number().required("Quantity is Required"),
   images: yup.mixed().required("Images are Required"), // Add this to validate images
+  attributes: yup.array(),
 });
 
 const Addproduct = () => {
@@ -53,7 +54,11 @@ const Addproduct = () => {
   const [color, setColor] = useState([]);
   const [images, setImages] = useState([]);
   const [size, setSize] = useState([]);
-  console.log(color);
+  const [attributes, setAttributes] = useState([
+    { size: "", color: "", quantity: 0 , price: 0},
+  ]);
+
+  // console.log(color);
   useEffect(() => {
     // dispatch(getBrands());
     dispatch(getCategories());
@@ -96,6 +101,21 @@ const Addproduct = () => {
     });
   });
 
+  // const handleAttributes = (index, field, value) => {
+  //   const newAttributes = [...formik.values.attributes];
+  //   if (!newAttributes[index]) {
+  //     newAttributes[index] = {}; // Initialize if it doesn't exist
+  //   }
+  //   newAttributes[index][field] = value;
+  //   formik.setFieldValue("attributes", newAttributes);
+  // };
+  const handleAttributeChange = (idx, e) => {
+    const { name, value } = e.target;
+    const newAttributes = [...attributes];
+    newAttributes[idx][name] = value;
+    setAttributes(newAttributes);
+  };
+
   // const img = [];
   // imgState.forEach((i) => {
   //   img.push({
@@ -109,17 +129,22 @@ const Addproduct = () => {
   //   formik.values.images = img;
   // }, [color, img]);
 
-  useEffect(() => {
-    formik.values.color = color ? color : " ";
-  }, [color]);
+  // useEffect(() => {
+  //   formik.values.color = color ? color : " ";
+  // }, [color]);
 
-  useEffect(() => {
-    formik.values.size = size ? size : " ";
-  }, [size]);
+  // useEffect(() => {
+  //   formik.values.size = size ? size : " ";
+  // }, [size]);
 
   useEffect(() => {
     formik.setFieldValue("images", images);
   }, [images]);
+
+  useEffect(() => {
+    formik.setFieldValue("attributes", attributes);
+  }, [attributes]);
+  
 
   // const formik = useFormik({
   //   initialValues: {
@@ -149,47 +174,54 @@ const Addproduct = () => {
       title: "",
       description: "",
       brand: "",
-      price: "",
+      // price: "",
       category: "",
       // tags: "",
-      color: [], // Change this to an array
-      size: [],
-      quantity: "",
+      // color: [], // Change this to an array
+      // size: [],
+      // quantity: "",
       images: [], // Add this to handle images
+      attributes: [{ size: "", color: "", quantity: 0 , price: 0}],
     },
     validationSchema: schema,
+
     onSubmit: (values) => {
       const formData = new FormData();
       formData.append("title", values.title);
       formData.append("description", values.description);
       formData.append("brand", values.brand);
-      formData.append("price", values.price);
       formData.append("category", values.category);
+      // formData.append("price", values.price);
       // formData.append('tags', values.tags);
-      formData.append("color", JSON.stringify(values.color)); // Convert color to JSON string
-      formData.append("size", JSON.stringify(values.size));
-      formData.append("quantity", values.quantity);
+      // formData.append("color", JSON.stringify(values.color)); // Convert color to JSON string
+      // formData.append("size", JSON.stringify(values.size));
+      // formData.append("quantity", values.quantity);
       for (let i = 0; i < values.images.length; i++) {
         formData.append("images", values.images[i]);
       }
+      formData.append("attributes", JSON.stringify(values.attributes));
+      console.log(formData);
+      // let x = JSON.stringify(values.attributes);
+      // console.log(values.attributes);
+      // console.log(attributes);
       dispatch(createProducts(formData));
-      formik.resetForm();
-      setColor(null);
-      setTimeout(() => {
-        dispatch(resetState());
-      }, 3000);
+      // formik.resetForm();
+      // setColor(null);
+      // setTimeout(() => {
+      //   dispatch(resetState());
+      // }, 3000);
     },
   });
 
-  const handleColors = (e) => {
-    setColor(e);
-    console.log(color);
-  };
+  // const handleColors = (e) => {
+  //   setColor(e);
+  //   console.log(color);
+  // };
 
-  const handleSizes = (e) => {
-    setSize(e);
-    console.log(size);
-  };
+  // const handleSizes = (e) => {
+  //   setSize(e);
+  //   console.log(size);
+  // };
 
   return (
     <div>
@@ -221,7 +253,8 @@ const Addproduct = () => {
           <div className="error">
             {formik.touched.description && formik.errors.description}
           </div>
-          <CustomInput
+
+          {/* <CustomInput
             type="number"
             label="Enter Product Price"
             name="price"
@@ -231,7 +264,7 @@ const Addproduct = () => {
           />
           <div className="error">
             {formik.touched.price && formik.errors.price}
-          </div>
+          </div> */}
           <CustomInput
             type="text"
             label="Enter Product Brand"
@@ -241,27 +274,11 @@ const Addproduct = () => {
             val={formik.values.brand}
           />
 
-          {/* <select
-            name="brand"
-            onChange={formik.handleChange("brand")}
-            onBlur={formik.handleBlur("brand")}
-            value={formik.values.brand}
-            className="form-control py-3 mb-3"
-            id=""
-          >
-            <option value="">Select Brand</option>
-            {brandState.map((i, j) => {
-              return (
-                <option key={j} value={i.title}>
-                  {i.title}
-                </option>
-              );
-            })}
-          </select> */}
-
           <div className="error">
             {formik.touched.brand && formik.errors.brand}
           </div>
+
+          {/* Category */}
           <select
             name="category"
             onChange={formik.handleChange("category")}
@@ -303,7 +320,7 @@ const Addproduct = () => {
           </div> */}
 
           {/* Colors */}
-          <Select
+          {/* <Select
             mode="multiple"
             allowClear
             className="w-100"
@@ -315,10 +332,10 @@ const Addproduct = () => {
 
           <div className="error">
             {formik.touched.color && formik.errors.color}
-          </div>
+          </div> */}
 
           {/* Sizes */}
-          <Select
+          {/* <Select
             mode="multiple"
             allowClear
             className="w-100"
@@ -330,9 +347,10 @@ const Addproduct = () => {
 
           <div className="error">
             {formik.touched.size && formik.errors.size}
-          </div>
+          </div> */}
 
-          <CustomInput
+          {/* Quantity */}
+          {/* <CustomInput
             type="number"
             label="Enter Product Quantity"
             name="quantity"
@@ -342,7 +360,9 @@ const Addproduct = () => {
           />
           <div className="error">
             {formik.touched.quantity && formik.errors.quantity}
-          </div>
+          </div> */}
+
+
           <div className="bg-white border-1 p-5 text-center">
             {/* <Dropzone onDrop={(acceptedFiles) => setImages(acceptedFiles)}> */}
             <Dropzone onDrop={(acceptedFiles) => setImages(acceptedFiles)}>
@@ -350,9 +370,7 @@ const Addproduct = () => {
                 <section>
                   <div {...getRootProps()}>
                     <input {...getInputProps()} />
-                    <p>
-                      Drag & drop some files here, or click to select files
-                    </p>
+                    <p>Drag & drop some files here, or click to select files</p>
                   </div>
                 </section>
               )}
@@ -380,37 +398,182 @@ const Addproduct = () => {
             ))}
           </div>
 
-          {/* <div className="bg-white border-1 p-5 text-center">
-            <Dropzone
-              onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}
-            >
-              {({ getRootProps, getInputProps }) => (
-                <section>
-                  <div {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    <p>
-                      Drag 'n' drop some files here, or click to select files
-                    </p>
-                  </div>
-                </section>
-              )}
-            </Dropzone>
-          </div>
-          <div className="showimages d-flex flex-wrap gap-3">
-            {imgState?.map((i, j) => {
-              return (
-                <div className=" position-relative" key={j}>
-                  <button
-                    type="button"
-                    onClick={() => dispatch(delImg(i.public_id))}
-                    className="btn-close position-absolute"
-                    style={{ top: "10px", right: "10px" }}
-                  ></button>
-                  <img src={i.url} alt="" width={200} height={200} />
-                </div>
-              );
-            })}
-          </div> */}
+          {attributes.map((attribute, idx) => (
+            <div key={idx} className="d-flex">
+              <select
+                name="size"
+                className="w-100"
+                placeholder="Select Size"
+                value={attribute.size}
+                onChange={(e) => handleAttributeChange(idx, e)}
+              >
+                <option value="">Select Size</option>
+                {sizeState.map((i, j) => (
+                  <option key={j} value={i.size_id}>
+                    {i.size_name}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                name="color"
+                className="w-100"
+                placeholder="Select Color"
+                value={attribute.color}
+                onChange={(e) => handleAttributeChange(idx, e)}
+              >
+                <option value="">Select Color</option>
+                {colorState.map((i, j) => (
+                  <option key={j} value={i.col_code}>
+                    {i.col_name}
+                  </option>
+                ))}
+              </select>
+
+              <input
+                type="number"
+                name="quantity"
+                placeholder="Quantity"
+                value={attribute.quantity}
+                onChange={(e) => handleAttributeChange(idx, e)}
+              />
+              <input
+                type="number"
+                name="price"
+                placeholder="Price"
+                value={attribute.price}
+                onChange={(e) => handleAttributeChange(idx, e)}
+              />
+
+              <button
+                type="button"
+                onClick={() =>
+                  setAttributes(attributes.filter((_, i) => i !== idx))
+                }
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+
+          {/* {attributes.map((attribute, index) => (
+            <div key={index} className="d-flex">
+              <select
+                // name={attribute.size}
+                // mode= "multiple"
+                // className="w-100"
+                // placeholder="Select colors"
+                // value={formik.values.attribute.size}
+                // onChange={(e) => {
+                //   const newAttributes = [...attributes];
+                //   newAttributes[index].size = e.target.value;
+                //   setAttributes(newAttributes);
+                // }}
+                name="size"
+                className="w-100"
+                placeholder="Select Size"
+                value={attribute.size}
+                onChange={(e) =>
+                  handleAttributes(index, "size", e.target.value)
+                }
+              >
+                {sizeState.map((i, j) => {
+                  return (
+                    <option key={j} value={i.size_id}>
+                      {i.size_name}
+                    </option>
+                  );
+                })}
+              </select>
+
+              <select
+                // name = {attribute.color}
+                //   className="w-100"
+                //   placeholder="Select Color"
+                //   value={formik.values.attribute.color}
+                //   onChange={(e) => {
+                //     const newAttributes = [...attributes];
+                //     newAttributes[index].color = e.target.value;
+                //     setAttributes(newAttributes);
+                //   }}
+                name="color"
+                className="w-100"
+                placeholder="Select Color"
+                value={attribute.color}
+                onChange={(e) =>
+                  handleAttributes(index, "color", e.target.value)
+                }
+              >
+                {colorState.map((i, j) => {
+                  return (
+                    <option key={j} value={i.col_code}>
+                      {i.col_name}
+                    </option>
+                  );
+                })}
+              </select>
+              <input
+                // type="number"
+                // placeholder="Quantity"
+                // value={formik.values.attribute.quantity}
+                // onChange={(e) => {
+                //   const newAttributes = [...attributes];
+                //   newAttributes[index].quantity = e.target.value;
+                //   setAttributes(newAttributes);
+                // }}
+                type="number"
+                placeholder="Quantity"
+                value={attribute.quantity}
+                onChange={(e) =>
+                  handleAttributes(index, "quantity", e.target.value)
+                }
+              />
+
+              <button
+                type="button"
+                onClick={() =>
+                  setAttributes(attributes.filter((_, i) => i !== index))
+                }
+              >
+                Remove
+              </button>
+            </div>
+          ))} */}
+
+          <button
+            type="button"
+            onClick={() =>
+              // setAttributes([
+              //   ...attributes,
+              //   { size: "", color: "", quantity: 0 },
+              // ])
+              setAttributes([
+                ...attributes,
+                {
+                  size: "",
+                  color: "",
+                  quantity: 0,
+                  price: 0,
+                }
+              ])
+              
+            }
+          >
+            Add attribute
+          </button>
+
+          {/* <button
+            type="button"
+            onClick={() =>
+              setAttributes([
+                ...attributes,
+                { size: "", color: "", quantity: 0 },
+              ])
+            }
+          >
+            Add attribute
+          </button> */}
+
           <button
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"
