@@ -27,14 +27,33 @@ import ViewOrder from "./pages/ViewOrder";
 import AddSupplier from "./pages/AddSupplier";
 import SupplierList from "./pages/SupplierList";
 import Reports from "./pages/Reports";
+import CashierDashboard from "./cashier/CashierDashboard"
+import CashierEnquiries from "./cashier/CashierEnquiries"
+import CashierMainLayout from "./components/CashierMainLayout"
+import { PrivateRoute } from "./routes/PrivateRoute";
+import NotFound from "./pages/NotFound";
+import CashierSales from "./cashier/CashierSales";
+
+const user = JSON.parse(localStorage.getItem("user"))
+console.log(user);
+
 function App() {
+  
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/reset-password" element={<Resetpassword />} />
         <Route path="/forgot-password" element={<Forgotpassword />} />
-        <Route path="/admin" element={<MainLayout />}>
+
+        <Route path="/cashier" element={(user?.isAdmin === "admin" || user?.isAdmin === "cashier") ? <CashierMainLayout /> : <Login/>}>
+          <Route index element={<CashierDashboard />} />
+          <Route path="sales" element={<CashierSales/>}/>
+          <Route path="cashier-enquiries" element={<CashierEnquiries />} />
+        </Route>
+
+
+        <Route path="/admin" element={user?.isAdmin === "admin" ? <MainLayout /> : <Login/>}>
           <Route index element={<Dashboard />} />
           <Route path="enquiries" element={<Enquiries />} />
           <Route path="enquiries/:id" element={<ViewEnq />} />
@@ -65,6 +84,7 @@ function App() {
           <Route path="list-supplier" element={<SupplierList/>} />
           <Route path="report" element={<Reports/>} />
         </Route>
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
     </Router>
   );

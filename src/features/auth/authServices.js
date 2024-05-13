@@ -10,6 +10,15 @@ const login = async (user) => {
   }
   return response.data;
 };
+const cashierLogin = async (user) => { 
+  const response = await axios.post(`${base_url}user/cashier-login`, user);
+  if (response.data) {
+    localStorage.setItem("user", JSON.stringify(response.data));
+  }
+  return response.data;
+};
+
+
 const getOrders = async () => {
   const response = await axios.get(`${base_url}user/getallorders`, config);
 
@@ -29,6 +38,7 @@ const authService = {
   login,
   getOrders,
   getOrder,
+  cashierLogin,
 };
 
 export default authService;

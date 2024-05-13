@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import CustomInput from "../components/CustomInput";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../features/auth/authSlice";
+import { login, cashierLogin } from "../features/auth/authSlice";
 
 let schema = yup.object().shape({
   email: yup
@@ -15,6 +15,7 @@ let schema = yup.object().shape({
   password: yup.string().required("Password is Required"),
 });
 const Login = () => {
+  const [cashier,setCashier] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,21 +26,37 @@ const Login = () => {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      dispatch(login(values));
+      if(cashier){
+        dispatch(cashierLogin(values))
+        .then(() => navigate("/cashier"))
+      }
+      else{
+        dispatch(login(values))
+        .then(() => navigate("/admin"))
+      }
     },
   });
 
   const authState = useSelector((state) => state);
 
-  const { user, isError, isSuccess, isLoading, message } = authState.auth;
+  // const { user, isError, isSuccess, isLoading, message } = authState.auth.user;
+  const { user = {}, isError, isSuccess, isLoading, message } = authState?.auth || {};
 
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("admin");
-    } else {
-      navigate("");
-    }
-  }, [user, isError, isSuccess, isLoading, navigate]);
+  console.log(user);
+
+
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     if (user?.isAdmin === "cashier") {
+  //       navigate("/cashier");
+  //     } else {
+  //       navigate("/admin");
+  //     }
+  //   }
+  //    else {
+  //     navigate("/");
+  //   }
+  // }, [user, isError, isSuccess, isLoading, navigate,formik]);
 
   return (
     <div className="py-5" style={{ background: "#ffd333", minHeight: "100vh" }}>
@@ -54,7 +71,7 @@ const Login = () => {
         <div className="error text-center">
           {message.message === "Rejected" ? "You are not an Admin" : ""}
         </div>
-        <form action="" onSubmit={formik.handleSubmit}>
+        <form action="" onSubmit={formik.handleSubmit}>          
           <CustomInput
             type="text"
             label="Email Address"
@@ -89,7 +106,15 @@ const Login = () => {
             style={{ background: "#ffd333" }}
             type="submit"
           >
-            Login
+            Login as Admin
+          </button>
+          <button
+            className="border-0 px-3 py-2 text-white fw-bold w-100 text-center bg-dark text-decoration-none fs-5"
+            style={{ background: "#ffd333" }}
+            type="submit"
+            onClick={() => setCashier(true)}
+          >
+            Login as Cashier
           </button>
         </form>
       </div>

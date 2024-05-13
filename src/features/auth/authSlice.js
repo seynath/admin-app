@@ -22,6 +22,18 @@ export const login = createAsyncThunk(
     }
   }
 );
+export const cashierLogin = createAsyncThunk(
+  "auth/cashier-login",
+  async (userData, thunkAPI) => {
+    try {
+      return await authService.cashierLogin(userData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
 
 export const getOrders = createAsyncThunk(
   "order/get-orders",
@@ -66,6 +78,24 @@ export const authSlice = createSlice({
         state.message = action.error;
         state.isLoading = false;
       })
+
+      .addCase(cashierLogin.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(cashierLogin.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+        state.message = "success";
+      })
+      .addCase(cashierLogin.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+
       .addCase(getOrders.pending, (state) => {
         state.isLoading = true;
       })
