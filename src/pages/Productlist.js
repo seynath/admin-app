@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
-import { Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { Table, Modal } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../features/product/productSlice";
+import { getProducts, deleteProduct } from "../features/product/productSlice";
 import { Link } from "react-router-dom";
+
 const columns = [
   {
     title: "SNo",
@@ -41,10 +42,33 @@ const columns = [
 ];
 
 const Productlist = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProducts());
   }, []);
+
+  // const handleDelete = (productId) => {
+  //   dispatch(deleteProduct(productId));
+  // };
+
+  const showDeleteConfirm = (productId) => {
+    setIsModalVisible(true);
+    setProductIdToDelete(productId);
+  };
+
+  const handleOk = () => {
+    dispatch(deleteProduct(productIdToDelete));
+    setIsModalVisible(false);
+    // refresh page
+    window.location.reload();
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   const productState = useSelector((state) => state.product.products);
   const data1 = [];
   for (let i = 0; i < productState.length; i++) {
@@ -57,12 +81,31 @@ const Productlist = () => {
       price: `${productState[i].price}`,
       action: (
         <>
-          <Link to="/" className=" fs-3 text-danger">
+          {/* <Link to="/" className=" fs-3 text-danger">
+            <BiEdit />
+          </Link> */}
+          <Link
+            to={`/admin/edit-product/${productState[i].p_id}`}
+            className="fs-3 text-danger"
+          >
             <BiEdit />
           </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
-            <AiFillDelete />
-          </Link>
+
+          {/* <AiFillDelete
+            onClick={() => handleDelete(productState[i].p_id)}
+            className="ms-3 fs-3 text-danger"
+          /> */}
+          {/* <AiFillDelete
+            onClick={() => {
+              setIsModalVisible(true);
+              setProductIdToDelete(productState[i].p_id);
+            }}
+            className="ms-3 fs-3 text-danger"
+          /> */}
+             <AiFillDelete
+            onClick={() => showDeleteConfirm(productState[i].p_id)}
+            className="ms-3 fs-3 text-danger"
+          />
         </>
       ),
     });
@@ -71,6 +114,15 @@ const Productlist = () => {
   return (
     <div>
       <h3 className="mb-4 title">Products</h3>
+      <Modal
+        title="Delete Product"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>Are you sure you want to delete this product?</p>
+      </Modal>
+
       <div>
         <Table columns={columns} dataSource={data1} />
       </div>

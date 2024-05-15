@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from "react";
 import CustomInput from "../components/CustomInput";
 import ReactQuill from "react-quill";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import { toast } from "react-toastify";
 import * as yup from "yup";
@@ -11,7 +11,7 @@ import { getCategories } from "../features/pcategory/pcategorySlice";
 import { getColors } from "../features/color/colorSlice";
 import { Select } from "antd";
 import Dropzone from "react-dropzone";
-import { createProducts, resetState } from "../features/product/productSlice";
+import { updateProduct, resetState } from "../features/product/productSlice";
 import { getSizes } from "../features/size/sizeSlice";
 
 let schema = yup.object().shape({
@@ -19,13 +19,13 @@ let schema = yup.object().shape({
   description: yup.string().required("Description is Required"),
   brand: yup.string().required("Brand is Required"),
   category: yup.number().required("Category is Required"),
-
   attributes: yup.array(),
 });
 
-const Addproduct = () => {
+const EditProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
   const [color, setColor] = useState([]);
   const [images, setImages] = useState([]);
   const [size, setSize] = useState([]);
@@ -42,17 +42,18 @@ const Addproduct = () => {
   const catState = useSelector((state) => state.pCategory.pCategories);
   const colorState = useSelector((state) => state.color.colors);
   const sizeState = useSelector((state) => state.size.sizes);
-  const newProduct = useSelector((state) => state.product);
-  const { isSuccess, isError, isLoading, createdProduct } = newProduct;
+  const productState = useSelector((state) => state.product);
+  const { isSuccess, isError, isLoading } = productState;
 
   useEffect(() => {
-    if (isSuccess && createdProduct) {
-      toast.success("Product Added Successfullly!");
+    if (isSuccess) {
+      toast.success("Product Updated Successfully!");
+      // navigate("/admin/products");
     }
     if (isError) {
       toast.error("Something Went Wrong!");
     }
-  }, [isSuccess, isError, isLoading]);
+  }, [isSuccess, isError, isLoading, navigate]);
 
   const coloropt = [];
 
@@ -93,8 +94,10 @@ const Addproduct = () => {
       description: "",
       brand: "",
       category: "",
-      images: [], // Add this to handle images
-      attributes: [{ size: "", color: "", quantity: 0, price: 0 }],
+      images: [],
+      attributes: [
+        { size: "", color: "", quantity: 0, price: 0 },
+      ],
     },
     validationSchema: schema,
 
@@ -110,21 +113,14 @@ const Addproduct = () => {
       }
       formData.append("attributes", JSON.stringify(values.attributes));
       console.log(formData);
-      // let x = JSON.stringify(values.attributes);
-      // console.log(values.attributes);
-      // console.log(attributes);
-      dispatch(createProducts(formData));
-      // formik.resetForm();
-      // setColor(null);
-      // setTimeout(() => {
-      //   dispatch(resetState());
-      // }, 3000);
+      dispatch(updateProduct({ id, formData }));
     },
   });
 
+
   return (
     <div>
-      <h3 className="mb-4 title">Add Product</h3>
+      <h3 className="mb-4 title">Edit Product</h3>
       <div>
         <form
           onSubmit={formik.handleSubmit}
@@ -302,7 +298,7 @@ const Addproduct = () => {
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"
           >
-            Add Product
+            Update Product
           </button>
         </form>
       </div>
@@ -310,4 +306,4 @@ const Addproduct = () => {
   );
 };
 
-export default Addproduct;
+export default EditProduct;

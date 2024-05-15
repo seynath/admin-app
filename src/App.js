@@ -33,6 +33,7 @@ import CashierMainLayout from "./components/CashierMainLayout"
 import { PrivateRoute } from "./routes/PrivateRoute";
 import NotFound from "./pages/NotFound";
 import CashierSales from "./cashier/CashierSales";
+import EditProduct from "./pages/EditProduct";
 
 const user = JSON.parse(localStorage.getItem("user"))
 console.log(user);
@@ -80,6 +81,7 @@ function App() {
           <Route path="size/:id" element={<AddSize />} />
           <Route path="list-product" element={<Productlist />} />
           <Route path="product" element={<Addproduct />} />
+          <Route path="edit-product/:id" element={<EditProduct/>} />
           <Route path="supplier" element={<AddSupplier/>} />
           <Route path="list-supplier" element={<SupplierList/>} />
           <Route path="report" element={<Reports/>} />
