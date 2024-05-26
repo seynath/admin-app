@@ -74,8 +74,8 @@ const Orders = () => {
     const response = await axios.get(`${base_url}user/get-orders`, config);
     console.log(response.data);
     setOrders(response.data.orders);
-    console.log(orders);
   };
+  console.log(orders);
 
   const getOrderProducts = async (orderId) =>{
     const response = await axios.get(`${base_url}user/get-order-products/${orderId}`, config)
@@ -120,6 +120,7 @@ const Orders = () => {
     email: order.email,
     mobile: order.mobile,
     order_status: order.order_status,
+    total_amount: order.total_amount,
     action: (
       <>
         <Button type="primary" onClick={() => showModal({...selectedOrder, order_id: order.order_id})}>

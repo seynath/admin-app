@@ -22,8 +22,6 @@ import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
 const { Header, Sider, Content } = Layout;
 
-
-
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -31,8 +29,6 @@ const MainLayout = () => {
   } = theme.useToken();
   const navigate = useNavigate();
 
-
-  
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -73,7 +69,7 @@ const MainLayout = () => {
                   icon: <AiOutlineShoppingCart className="fs-4" />,
                   label: "Add Product",
                 },
-         
+
                 {
                   key: "list-product",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
@@ -116,50 +112,50 @@ const MainLayout = () => {
               icon: <FaClipboardList className="fs-4" />,
               label: "Manage Orders",
             },
-            {
-              key: "marketing",
-              icon: <RiCouponLine className="fs-4" />,
-              label: "Marketing",
-              children: [
-                {
-                  key: "coupon",
-                  icon: <ImBlog className="fs-4" />,
-                  label: "Add Coupon",
-                },
-                {
-                  key: "coupon-list",
-                  icon: <RiCouponLine className="fs-4" />,
-                  label: "Coupon List",
-                },
-              ],
-            },
-            {
-              key: "blogs",
-              icon: <FaBloggerB className="fs-4" />,
-              label: "Blogs",
-              children: [
-                {
-                  key: "blog",
-                  icon: <ImBlog className="fs-4" />,
-                  label: "Add Blog",
-                },
-                {
-                  key: "blog-list",
-                  icon: <FaBloggerB className="fs-4" />,
-                  label: "Blog List",
-                },
-                {
-                  key: "blog-category",
-                  icon: <ImBlog className="fs-4" />,
-                  label: "Add Blog Category",
-                },
-                {
-                  key: "blog-category-list",
-                  icon: <FaBloggerB className="fs-4" />,
-                  label: "Blog Category List",
-                },
-              ],
-            },
+            // {
+            //   key: "marketing",
+            //   icon: <RiCouponLine className="fs-4" />,
+            //   label: "Marketing",
+            //   children: [
+            //     {
+            //       key: "coupon",
+            //       icon: <ImBlog className="fs-4" />,
+            //       label: "Add Coupon",
+            //     },
+            //     {
+            //       key: "coupon-list",
+            //       icon: <RiCouponLine className="fs-4" />,
+            //       label: "Coupon List",
+            //     },
+            //   ],
+            // },
+            // {
+            //   key: "blogs",
+            //   icon: <FaBloggerB className="fs-4" />,
+            //   label: "Blogs",
+            //   children: [
+            //     {
+            //       key: "blog",
+            //       icon: <ImBlog className="fs-4" />,
+            //       label: "Add Blog",
+            //     },
+            //     {
+            //       key: "blog-list",
+            //       icon: <FaBloggerB className="fs-4" />,
+            //       label: "Blog List",
+            //     },
+            //     {
+            //       key: "blog-category",
+            //       icon: <ImBlog className="fs-4" />,
+            //       label: "Add Blog Category",
+            //     },
+            //     {
+            //       key: "blog-category-list",
+            //       icon: <FaBloggerB className="fs-4" />,
+            //       label: "Blog Category List",
+            //     },
+            //   ],
+            // },
             {
               key: "enquiries",
               icon: <FaClipboardList className="fs-4" />,
@@ -170,8 +166,20 @@ const MainLayout = () => {
               key: "suppliers",
               icon: <FaClipboardList className="fs-4" />,
               label: "Manage Suppliers",
+              children:[
+                {
+                  key: "suppliers",
+                  icon: <FaClipboardList className="fs-4" />,
+                  label: "Add Suppliers",
+                },
+                {
+                  key: "list-supplier",
+                  icon: <FaClipboardList className="fs-4" />,
+                  label: "Supplier List",
+                },
+              ]
             },
-         
+
             {
               key: "reports",
               icon: <FaClipboardList className="fs-4" />,
@@ -233,18 +241,25 @@ const MainLayout = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link
+                  <button
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
+                    onClick={() => {
+                      // Remove the user and tokens from local storage
+                      localStorage.removeItem("user");
+                      localStorage.removeItem("token");
+
+                      // Refresh the page
+                      window.location.href = "/";
+                    }}
                   >
                     Signout
-                  </Link>
+                  </button>
                 </li>
               </div>
             </div>
           </div>
-        </Header> 
+        </Header>
         <Content
           style={{
             margin: "24px 16px",

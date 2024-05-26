@@ -3,7 +3,6 @@ import { config } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 const getSizes = async () => {
   const response = await axios.get(`${base_url}size/`);
-  console.log(response)
   return response.data;
 };
 

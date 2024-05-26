@@ -6,22 +6,18 @@ import Resetpassword from "./pages/Resetpassword";
 import Forgotpassword from "./pages/Forgotpassword";
 import MainLayout from "./components/MainLayout";
 import Enquiries from "./pages/Enquiries";
-import Bloglist from "./pages/Bloglist";
-import Blogcatlist from "./pages/Blogcatlist";
+
 import Orders from "./pages/Orders";
 import Customers from "./pages/Customers";
 import Colorlist from "./pages/Colotlist";
 import Categorylist from "./pages/Categorylist";
 import Sizelist from "./pages/Sizelist";
 import Productlist from "./pages/Productlist";
-import Addblog from "./pages/Addblog";
-import Addblogcat from "./pages/Addblogcat";
+
 import Addcolor from "./pages/Addcolor";
 import Addcat from "./pages/Addcat";
 import AddSize from "./pages/AddSize";
 import Addproduct from "./pages/Addproduct";
-import Couponlist from "./pages/Couponlist";
-import AddCoupon from "./pages/AddCoupon";
 import ViewEnq from "./pages/ViewEnq";
 import ViewOrder from "./pages/ViewOrder";
 import AddSupplier from "./pages/AddSupplier";
@@ -34,6 +30,7 @@ import { PrivateRoute } from "./routes/PrivateRoute";
 import NotFound from "./pages/NotFound";
 import CashierSales from "./cashier/CashierSales";
 import EditProduct from "./pages/EditProduct";
+import EditSupplier from "./pages/EditSupplier";
 
 const user = JSON.parse(localStorage.getItem("user"))
 console.log(user);
@@ -58,7 +55,7 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="enquiries" element={<Enquiries />} />
           <Route path="enquiries/:id" element={<ViewEnq />} />
-          <Route path="blog-list" element={<Bloglist />} />
+          {/* <Route path="blog-list" element={<Bloglist />} />
           <Route path="blog" element={<Addblog />} />
           <Route path="blog/:id" element={<Addblog />} />
           <Route path="coupon-list" element={<Couponlist />} />
@@ -66,7 +63,7 @@ function App() {
           <Route path="coupon/:id" element={<AddCoupon />} />
           <Route path="blog-category-list" element={<Blogcatlist />} />
           <Route path="blog-category" element={<Addblogcat />} />
-          <Route path="blog-category/:id" element={<Addblogcat />} />
+          <Route path="blog-category/:id" element={<Addblogcat />} /> */}
           <Route path="orders" element={<Orders />} />
           <Route path="order/:id" element={<ViewOrder />} />
           <Route path="customers" element={<Customers />} />
@@ -82,8 +79,9 @@ function App() {
           <Route path="list-product" element={<Productlist />} />
           <Route path="product" element={<Addproduct />} />
           <Route path="edit-product/:id" element={<EditProduct/>} />
-          <Route path="supplier" element={<AddSupplier/>} />
+          <Route path="suppliers" element={<AddSupplier/>} />
           <Route path="list-supplier" element={<SupplierList/>} />
+          <Route path="edit-supplier/:id" element={<EditSupplier/>} />
           <Route path="report" element={<Reports/>} />
         </Route>
         <Route path="*" element={<NotFound/>}/>

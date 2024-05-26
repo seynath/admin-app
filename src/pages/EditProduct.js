@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from "react";
 import CustomInput from "../components/CustomInput";
 import ReactQuill from "react-quill";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import { toast } from "react-toastify";
 import * as yup from "yup";
@@ -11,7 +11,7 @@ import { getCategories } from "../features/pcategory/pcategorySlice";
 import { getColors } from "../features/color/colorSlice";
 import { Select } from "antd";
 import Dropzone from "react-dropzone";
-import { updateProduct, resetState } from "../features/product/productSlice";
+import { updateProduct, resetState, getSingleProduct } from "../features/product/productSlice";
 import { getSizes } from "../features/size/sizeSlice";
 
 let schema = yup.object().shape({
@@ -30,10 +30,13 @@ const EditProduct = () => {
   const [images, setImages] = useState([]);
   const [size, setSize] = useState([]);
   const [attributes, setAttributes] = useState([
-    { size: "", color: "", quantity: 0, price: 0 },
+    { size: "", color: "", quantity: 0, price: 0 , buyingPrice: 0},
   ]);
+  const location = useLocation()
+  const getProductId = location.pathname.split("/")[3];
 
   useEffect(() => {
+    dispatch(getSingleProduct(getProductId))
     dispatch(getCategories());
     dispatch(getColors());
     dispatch(getSizes());
@@ -42,18 +45,46 @@ const EditProduct = () => {
   const catState = useSelector((state) => state.pCategory.pCategories);
   const colorState = useSelector((state) => state.color.colors);
   const sizeState = useSelector((state) => state.size.sizes);
-  const productState = useSelector((state) => state.product);
-  const { isSuccess, isError, isLoading } = productState;
+  const productState = useSelector((state) => state.product.singleProduct);
+  console.log(productState);
+  // const { isSuccess, isError, isLoading } = productState;
+
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success("Product Updated Successfully!");
-      // navigate("/admin/products");
+    dispatch(getCategories());
+    dispatch(getColors());
+    dispatch(getSizes());
+
+    // Fetch product data from your Redux store or API and set form fields
+    if (productState) {
+      formik.setFieldValue("title", productState.p_title);
+      formik.setFieldValue("description", productState.p_description);
+      formik.setFieldValue("brand", productState.brand);
+      formik.setFieldValue("category", productState.category_id);
+      // Set other form fields as needed
+      setAttributes(
+        productState.size_color_quantity.map((item) => ({
+          size: item.size_id,
+          color: item.color_code,
+          quantity: item.quantity,
+          price: item.unit_price,
+          buyingPrice: item.buyingPrice,
+        }))
+      );
+    
     }
-    if (isError) {
-      toast.error("Something Went Wrong!");
-    }
-  }, [isSuccess, isError, isLoading, navigate]);
+  }, [productState]);
+
+
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     toast.success("Product Updated Successfully!");
+  //     // navigate("/admin/products");
+  //   }
+  //   if (isError) {
+  //     toast.error("Something Went Wrong!");
+  //   }
+  // }, [isSuccess, isError, isLoading, navigate]);
 
   const coloropt = [];
 
@@ -96,7 +127,7 @@ const EditProduct = () => {
       category: "",
       images: [],
       attributes: [
-        { size: "", color: "", quantity: 0, price: 0 },
+        { size: "", color: "", quantity: 0, price: 0, buyingPrice: 0 },
       ],
     },
     validationSchema: schema,
@@ -137,6 +168,7 @@ const EditProduct = () => {
           <div className="error">
             {formik.touched.title && formik.errors.title}
           </div>
+          
           <div className="">
             <ReactQuill
               theme="snow"
@@ -265,6 +297,13 @@ const EditProduct = () => {
                 value={attribute.price}
                 onChange={(e) => handleAttributeChange(idx, e)}
               />
+              <input
+                type="number"
+                name="buyingPrice"
+                placeholder="buyingPrice"
+                value={attribute.buyingPrice}
+                onChange={(e) => handleAttributeChange(idx, e)}
+              />
 
               <button
                 type="button"
@@ -287,6 +326,7 @@ const EditProduct = () => {
                   color: "",
                   quantity: 0,
                   price: 0,
+                  buyingPrice: 0,
                 },
               ])
             }

@@ -43,6 +43,19 @@ export const deleteProduct = createAsyncThunk(
     }
   }
 );
+
+export const getSingleProduct = createAsyncThunk(
+  "product/get-single-product",
+  async (productId, thunkAPI) => {
+    try {
+      return await productService.getSingleProduct(productId);
+    }
+    catch (error) {
+      return thunkAPI.rejectWithValue(error);
+      }
+    }
+)
+
 export const resetState = createAction("Reset_all");
 
 const initialState = {
@@ -103,7 +116,22 @@ export const productSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(resetState, () => initialState);
+      .addCase(resetState, () => initialState)
+      .addCase(getSingleProduct.pending, (state, action) =>{
+        state.isLoading = true;
+        })
+      .addCase(getSingleProduct.rejected, (state, action) =>{
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+      })
+      .addCase(getSingleProduct.fulfilled, (state, action) =>{
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.singleProduct = action.payload;
+        })
+
   },
 });
 export default productSlice.reducer;
