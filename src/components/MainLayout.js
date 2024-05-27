@@ -32,8 +32,8 @@ const MainLayout = () => {
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo">
-          <h2 className="text-white fs-5 text-center py-3 mb-0">
+        <div className="logo" style={{background:"#252525"}}>
+          <h2 className="text-white fs-5 text-center py-3 mb-0 ">
             <span className="sm-logo">NF</span>
             <span className="lg-logo">Nisha Fashion</span>
           </h2>
@@ -48,6 +48,7 @@ const MainLayout = () => {
               navigate(key);
             }
           }}
+          style={{ background: "#090909",  height:"100vh"}}
           items={[
             {
               key: "",

@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { login, cashierLogin } from "../features/auth/authSlice";
+import heroImg from "../images/hero2.jpeg"
 
 let schema = yup.object().shape({
   email: yup
@@ -59,7 +60,7 @@ const Login = () => {
   // }, [user, isError, isSuccess, isLoading, navigate,formik]);
 
   return (
-    <div className="py-5" style={{ background: "#ffd333", minHeight: "100vh" }}>
+    <div className="py-5" style={{ background: "#ffd333", minHeight: "100vh" ,backgroundImage: `url(${heroImg})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
       <br />
       <br />
       <br />
@@ -103,7 +104,7 @@ const Login = () => {
           </div>
           <button
             className="border-0 px-3 py-2 text-white fw-bold w-100 text-center text-decoration-none fs-5"
-            style={{ background: "#ffd333" }}
+            style={{ background: "#4E4E4E" }}
             type="submit"
           >
             Login as Admin

@@ -14,13 +14,6 @@ import Dropzone from "react-dropzone";
 import { updateProduct, resetState, getSingleProduct } from "../features/product/productSlice";
 import { getSizes } from "../features/size/sizeSlice";
 
-let schema = yup.object().shape({
-  title: yup.string().required("Title is Required"),
-  description: yup.string().required("Description is Required"),
-  brand: yup.string().required("Brand is Required"),
-  category: yup.number().required("Category is Required"),
-  attributes: yup.array(),
-});
 
 const EditProduct = () => {
   const dispatch = useDispatch();
@@ -34,27 +27,27 @@ const EditProduct = () => {
   ]);
   const location = useLocation()
   const getProductId = location.pathname.split("/")[3];
-
+  
   useEffect(() => {
     dispatch(getSingleProduct(getProductId))
     dispatch(getCategories());
     dispatch(getColors());
     dispatch(getSizes());
   }, []);
-
+  
   const catState = useSelector((state) => state.pCategory.pCategories);
   const colorState = useSelector((state) => state.color.colors);
   const sizeState = useSelector((state) => state.size.sizes);
   const productState = useSelector((state) => state.product.singleProduct);
   console.log(productState);
   // const { isSuccess, isError, isLoading } = productState;
-
-
+  
+  
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getColors());
     dispatch(getSizes());
-
+    
     // Fetch product data from your Redux store or API and set form fields
     if (productState) {
       formik.setFieldValue("title", productState.p_title);
@@ -71,92 +64,100 @@ const EditProduct = () => {
           buyingPrice: item.buyingPrice,
         }))
       );
-    
+      
     }
   }, [productState]);
-
-
+  
+  
   // useEffect(() => {
-  //   if (isSuccess) {
-  //     toast.success("Product Updated Successfully!");
-  //     // navigate("/admin/products");
-  //   }
-  //   if (isError) {
-  //     toast.error("Something Went Wrong!");
-  //   }
-  // }, [isSuccess, isError, isLoading, navigate]);
-
-  const coloropt = [];
-
-  colorState.forEach((i) => {
-    coloropt.push({
-      label: i.col_name,
-      value: i.col_code,
-    });
-  });
-
-  const sizeopt = [];
-
-  sizeState.forEach((i) => {
-    sizeopt.push({
-      label: i.size_name,
-      value: i.size_id,
-    });
-  });
-
-  const handleAttributeChange = (idx, e) => {
-    const { name, value } = e.target;
-    const newAttributes = [...attributes];
-    newAttributes[idx][name] = value;
-    setAttributes(newAttributes);
-  };
-
-  useEffect(() => {
-    formik.setFieldValue("images", images);
-  }, [images]);
-
-  useEffect(() => {
-    formik.setFieldValue("attributes", attributes);
-  }, [attributes]);
-
-  const formik = useFormik({
-    initialValues: {
-      title: "",
-      description: "",
-      brand: "",
-      category: "",
-      images: [],
-      attributes: [
-        { size: "", color: "", quantity: 0, price: 0, buyingPrice: 0 },
-      ],
-    },
-    validationSchema: schema,
-
-    onSubmit: (values) => {
-      const formData = new FormData();
-      formData.append("title", values.title);
-      formData.append("description", values.description);
-      formData.append("brand", values.brand);
-      formData.append("category", values.category);
-
-      for (let i = 0; i < values.images.length; i++) {
-        formData.append("images", values.images[i]);
-      }
-      formData.append("attributes", JSON.stringify(values.attributes));
-      console.log(formData);
-      dispatch(updateProduct({ id, formData }));
-    },
-  });
-
-
-  return (
-    <div>
+    //   if (isSuccess) {
+      //     toast.success("Product Updated Successfully!");
+      //     // navigate("/admin/products");
+      //   }
+      //   if (isError) {
+        //     toast.error("Something Went Wrong!");
+        //   }
+        // }, [isSuccess, isError, isLoading, navigate]);
+        
+        const coloropt = [];
+        
+        colorState.forEach((i) => {
+          coloropt.push({
+            label: i.col_name,
+            value: i.col_code,
+          });
+        });
+        
+        const sizeopt = [];
+        
+        sizeState.forEach((i) => {
+          sizeopt.push({
+            label: i.size_name,
+            value: i.size_id,
+          });
+        });
+        
+        const handleAttributeChange = (idx, e) => {
+          const { name, value } = e.target;
+          const newAttributes = [...attributes];
+          newAttributes[idx][name] = value;
+          setAttributes(newAttributes);
+        };
+        
+        useEffect(() => {
+          formik.setFieldValue("images", images);
+        }, [images]);
+        
+        useEffect(() => {
+          formik.setFieldValue("attributes", attributes);
+        }, [attributes]);
+        
+        let schema = yup.object().shape({
+          title: yup.string().required("Title is Required"),
+          description: yup.string().required("Description is Required"),
+          brand: yup.string().required("Brand is Required"),
+          category: yup.number().required("Category is Required"),
+          attributes: yup.array(),
+        });
+        
+        const formik = useFormik({
+          initialValues: {
+            title: "",
+            description: "",
+            brand: "",
+            category: "",
+            images: [],
+            attributes: [
+              { size: "", color: "", quantity: 0, price: 0, buyingPrice: 0 },
+            ],
+          },
+          validationSchema: schema,
+          
+          onSubmit: (values) => {
+            const formData = new FormData();
+            formData.append("title", values.title);
+            formData.append("description", values.description);
+            formData.append("brand", values.brand);
+            formData.append("category", values.category);
+            
+            for (let i = 0; i < values.images.length; i++) {
+              formData.append("images", values.images[i]);
+            }
+            formData.append("attributes", JSON.stringify(values.attributes));
+            console.log(formData);
+            dispatch(updateProduct({ id, formData }));
+          },
+        });
+        
+        
+        return (
+          <div>
       <h3 className="mb-4 title">Edit Product</h3>
       <div>
         <form
           onSubmit={formik.handleSubmit}
           className="d-flex gap-3 flex-column"
-        >
+          >
           <CustomInput
             type="text"
             label="Enter Product Title"
