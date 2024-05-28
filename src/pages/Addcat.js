@@ -15,15 +15,18 @@ let schema = yup.object().shape({
   title: yup.string().required("Category Name is Required"),
 });
 const Addcat = () => {
-
   const dispatch = useDispatch();
   const location = useLocation();
   const getPCatId = location.pathname.split("/")[3];
   const navigate = useNavigate();
   const newCategory = useSelector((state) => state.pCategory);
-  const { isSuccess,
+  const {
+    isSuccess,
     isError,
-    isLoading, createdCategory, categoryName, updatedCategory,
+    isLoading,
+    createdCategory,
+    categoryName,
+    updatedCategory,
   } = newCategory;
 
   useEffect(() => {
@@ -34,7 +37,6 @@ const Addcat = () => {
     }
   }, [getPCatId]);
 
-  
   useEffect(() => {
     if (isSuccess && createdCategory) {
       toast.success("Category Added Successfullly!");
@@ -48,7 +50,6 @@ const Addcat = () => {
     }
   }, [isSuccess, isError, isLoading]);
 
-  
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {

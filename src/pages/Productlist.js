@@ -63,7 +63,10 @@ const Productlist = () => {
     dispatch(deleteProduct(productIdToDelete));
     setIsModalVisible(false);
     // refresh page
-    window.location.reload();
+    setTimeout(()=>{
+      window.location.reload();
+
+    }, 1000)
   };
 
   const handleCancel = () => {

@@ -113,6 +113,11 @@ const MainLayout = () => {
               icon: <FaClipboardList className="fs-4" />,
               label: "Manage Orders",
             },
+            {
+              key: "sales-admin",
+              icon: <FaClipboardList className="fs-4" />,
+              label: "Manage Sales",
+            },
             // {
             //   key: "marketing",
             //   icon: <RiCouponLine className="fs-4" />,

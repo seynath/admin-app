@@ -18,7 +18,6 @@ import Addcolor from "./pages/Addcolor";
 import Addcat from "./pages/Addcat";
 import AddSize from "./pages/AddSize";
 import Addproduct from "./pages/Addproduct";
-import ViewEnq from "./pages/ViewEnq";
 import ViewOrder from "./pages/ViewOrder";
 import AddSupplier from "./pages/AddSupplier";
 import SupplierList from "./pages/SupplierList";
@@ -31,6 +30,7 @@ import NotFound from "./pages/NotFound";
 import CashierSales from "./cashier/CashierSales";
 import EditProduct from "./pages/EditProduct";
 import EditSupplier from "./pages/EditSupplier";
+import Sales from "./pages/Sales";
 
 const user = JSON.parse(localStorage.getItem("user"))
 console.log(user);
@@ -47,6 +47,7 @@ function App() {
         <Route path="/cashier" element={(user?.isAdmin === "admin" || user?.isAdmin === "cashier") ? <CashierMainLayout /> : <Login/>}>
           <Route index element={<CashierDashboard />} />
           <Route path="sales" element={<CashierSales/>}/>
+          
           <Route path="cashier-enquiries" element={<CashierEnquiries />} />
         </Route>
 
@@ -54,7 +55,7 @@ function App() {
         <Route path="/admin" element={user?.isAdmin === "admin" ? <MainLayout /> : <Login/>}>
           <Route index element={<Dashboard />} />
           <Route path="enquiries" element={<Enquiries />} />
-          <Route path="enquiries/:id" element={<ViewEnq />} />
+          {/* <Route path="enquiries/:id" element={<ViewEnq />} /> */}
           {/* <Route path="blog-list" element={<Bloglist />} />
           <Route path="blog" element={<Addblog />} />
           <Route path="blog/:id" element={<Addblog />} />
@@ -64,6 +65,7 @@ function App() {
           <Route path="blog-category-list" element={<Blogcatlist />} />
           <Route path="blog-category" element={<Addblogcat />} />
           <Route path="blog-category/:id" element={<Addblogcat />} /> */}
+          <Route path="sales-admin" element={<Sales/>}/>
           <Route path="orders" element={<Orders />} />
           <Route path="order/:id" element={<ViewOrder />} />
           <Route path="customers" element={<Customers />} />
