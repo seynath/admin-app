@@ -14,6 +14,7 @@ const EditSupplier = () => {
   const location = useLocation();
   const supplierId = location.pathname.split("/")[3];
 
+
   useEffect(() => {
     
     const fetchProducts = async () => {
@@ -23,9 +24,23 @@ const EditSupplier = () => {
       setProducts(x);
     };
 
+    const fetchSupplier1 = async () => {
+      const response = await axios.get(
+        `${base_url}supplier/${supplierId}`
+      );
+      console.log(response.data);
+      setSupplierDetails({
+        supplier_id: response?.data[0]?.supplier_id,
+        supplier_name: response?.data[0]?.supplier_name,
+        supplier_email: response?.data[0]?.supplier_email,
+        supplier_phone: response?.data[0]?.supplier_phone,
+        supplier_address: response?.data[0]?.supplier_address,
+      })
+    };
 
-    const productidlist = 
 
+
+    fetchSupplier1()
     fetchSupplier();
     fetchProducts();
   }, [supplierId]);
@@ -40,13 +55,13 @@ const EditSupplier = () => {
     );
     console.log(response.data);
     setSupplier(response.data);
-    setSupplierDetails({
-      supplier_id: response.data[0].supplier_id,
-      supplier_name: response.data[0].supplier_name,
-      supplier_email: response.data[0].supplier_email,
-      supplier_phone: response.data[0].supplier_phone,
-      supplier_address: response.data[0].supplier_address,
-    })
+    // setSupplierDetails({
+    //   supplier_id: response?.data[0]?.supplier_id,
+    //   supplier_name: response?.data[0]?.supplier_name,
+    //   supplier_email: response?.data[0]?.supplier_email,
+    //   supplier_phone: response?.data[0]?.supplier_phone,
+    //   supplier_address: response?.data[0]?.supplier_address,
+    // })
 
     setProductIds(response.data.map((product) => product.p_id));
   };
@@ -193,8 +208,8 @@ console.log(updatedData);
 
           {supplier && supplier.length > 0 ? (
             <Row gutter={[16, 16]}>
-              {supplier.map((product) => (
-                <Col key={product.id} span={6}>
+              {supplier.map((product,index) => (
+                <Col key={index} span={6}>
                   <Card
                     cover={
                       <img
@@ -243,6 +258,7 @@ console.log(updatedData);
     placeholder="Please select products"
     value={productIds}
     onChange={handleProductSelect}
+    style={{ width: "100%" }}
   >
     {products.map((product) => (
       <Select.Option key={product.p_id} value={product.p_id}>

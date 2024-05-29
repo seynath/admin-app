@@ -39,26 +39,12 @@ const Login = () => {
   });
 
   const authState = useSelector((state) => state);
-
-  // const { user, isError, isSuccess, isLoading, message } = authState.auth.user;
   const { user = {}, isError, isSuccess, isLoading, message } = authState?.auth || {};
 
   console.log(user);
 
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     if (user?.isAdmin === "cashier") {
-  //       navigate("/cashier");
-  //     } else {
-  //       navigate("/admin");
-  //     }
-  //   }
-  //    else {
-  //     navigate("/");
-  //   }
-  // }, [user, isError, isSuccess, isLoading, navigate,formik]);
-
+  
   return (
     <div className="py-5" style={{ background: "#ffd333", minHeight: "100vh" ,backgroundImage: `url(${heroImg})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
       <br />

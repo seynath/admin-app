@@ -241,6 +241,8 @@ const CashierSales = () => {
                       value={productQuantity}
                       onChange={handleProductQuantityChange}
                       placeholder="Quantity"
+                      min={1}
+                      max={100}
                     />
                   </div>
                 </div>

@@ -84,7 +84,7 @@ function App() {
           <Route path="suppliers" element={<AddSupplier/>} />
           <Route path="list-supplier" element={<SupplierList/>} />
           <Route path="edit-supplier/:id" element={<EditSupplier/>} />
-          <Route path="report" element={<Reports/>} />
+          <Route path="reports" element={<Reports/>} />
         </Route>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
