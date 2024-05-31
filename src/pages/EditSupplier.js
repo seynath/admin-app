@@ -18,24 +18,37 @@ const EditSupplier = () => {
   useEffect(() => {
     
     const fetchProducts = async () => {
-      const response = await axios.get(`${base_url}product`);
-      console.log(response.data);
-      const x = response.data;
-      setProducts(x);
+      await axios.get(`${base_url}product`)
+      .then((response) => {
+        console.log(response.data);
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     };
 
     const fetchSupplier1 = async () => {
-      const response = await axios.get(
+      await axios.get(
         `${base_url}supplier/${supplierId}`
-      );
-      console.log(response.data);
-      setSupplierDetails({
-        supplier_id: response?.data[0]?.supplier_id,
-        supplier_name: response?.data[0]?.supplier_name,
-        supplier_email: response?.data[0]?.supplier_email,
-        supplier_phone: response?.data[0]?.supplier_phone,
-        supplier_address: response?.data[0]?.supplier_address,
-      })
+      ).then(
+        (response) => {
+          console.log(response.data);
+          setSupplierDetails({
+            supplier_id: response?.data[0]?.supplier_id,
+            supplier_name: response.data[0]?.supplier_name,
+            supplier_email: response.data[0]?.supplier_email,
+            supplier_phone: response.data[0]?.supplier_phone,
+            supplier_address: response.data[0]?.supplier_address,
+
+          })
+        }
+      ).catch(
+        (error) => {
+          console.log(error);
+        }
+      )
+     
     };
 
 
@@ -50,20 +63,17 @@ const EditSupplier = () => {
 
   
   const fetchSupplier = async () => {
-    const response = await axios.get(
+    await axios.get(
       `${base_url}supplier/getsupplierbyid/${supplierId}`
-    );
-    console.log(response.data);
-    setSupplier(response.data);
-    // setSupplierDetails({
-    //   supplier_id: response?.data[0]?.supplier_id,
-    //   supplier_name: response?.data[0]?.supplier_name,
-    //   supplier_email: response?.data[0]?.supplier_email,
-    //   supplier_phone: response?.data[0]?.supplier_phone,
-    //   supplier_address: response?.data[0]?.supplier_address,
-    // })
-
-    setProductIds(response.data.map((product) => product.p_id));
+    )
+    .then((response) => {
+      console.log(response.data);
+      setSupplier(response.data);
+      setProductIds(response.data.map((product) => product.p_id));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   };
   
   

@@ -29,11 +29,32 @@ const Login = () => {
     onSubmit: (values) => {
       if(cashier){
         dispatch(cashierLogin(values))
-        .then(() => navigate("/cashier"))
+        .then((response) =>{
+          if(response.payload.token){
+            window.location.replace("/cashier")
+            // navigate("/cashier")
+          }
+        //   console.log(response);
+        //   if(response.payload.isAdmin == "cashier"){
+        //   navigate("/cashier")
+        // } else if(response.payload.isAdmin == "admin"){
+        //   navigate("/admin")
+        // }
+      }
+       )
       }
       else{
+
         dispatch(login(values))
-        .then(() => navigate("/admin"))
+        .then(
+          (response) =>{
+            if(response.payload.token){
+              // navigate("/admin")
+              window.location.replace("/admin")
+            }
+          }
+        )
+        // .then(() => navigate("/admin"))
       }
     },
   });

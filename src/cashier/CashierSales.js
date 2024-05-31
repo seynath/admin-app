@@ -45,11 +45,7 @@ const CashierSales = () => {
     setProductNumber(id);
   };
 
-  // const handleProductQuantityChange = (e) => {
-  //   const quantity = parseInt(e.target.value, 10)
-  //   setProductQuantity(quantity)
-  // }
-
+ 
   const handleProductQuantityChange = (e) => {
     const quantity = parseInt(e.target.value, 10);
     if (product && quantity > product.quantity) {
@@ -62,33 +58,7 @@ const CashierSales = () => {
     }
   };
 
-  // const addProductToList = (product) => {
-  //   setProductList([...productList, { ...product, quantity: productQuantity }])
-  //   setProductNumber('')
-  //   setProduct(null)
-  //   setProductQuantity(1)
-  // }
 
-  // const addProductToList = (product) => {
-  //   const index = productList.findIndex(
-  //     (p) =>
-  //       p.p_id === product.p_id &&
-  //       p.size_color_quantity_id === product.size_color_quantity_id
-  //   );
-  //   if (index === -1) {
-  //     setProductList([
-  //       ...productList,
-  //       { ...product, quantity: productQuantity },
-  //     ]);
-  //   } else {
-  //     const newProductList = [...productList];
-  //     newProductList[index].quantity += productQuantity;
-  //     setProductList(newProductList);
-  //   }
-  //   setProductNumber("");
-  //   setProduct(null);
-  //   setProductQuantity(1);
-  // };
 
   const addProductToList = (product) => {
     setProductList([...productList, { ...product, quantity: productQuantity, size_color_quantity_id: product.size_color_quantity_id }]);
@@ -97,10 +67,6 @@ const CashierSales = () => {
     setProductQuantity(1);
   }
   
-
-  // const removeProductFromList = (number) => {
-  //   setProductList(productList.filter(product => product.number !== number))
-  // }
 
   const removeProductFromList = (p_id, size_color_quantity_id) => {
     setProductList(
@@ -132,6 +98,15 @@ const CashierSales = () => {
       console.log(response.data.salesOrder.sales_id);
       const x = response.data.salesOrder.sales_id
       setSalesOrderId(x);
+      if(response.status == 201){
+        const printBill = window.confirm("Order placed successfully. Would you like to print the bill?");
+        if (printBill) {
+          printBill(salesOrderId)
+        } else {
+          window.location.reload()
+          // Code for a new transaction
+        }
+      }
       // Reset product list
       // clearProductList();
     } catch (err) {
@@ -139,16 +114,6 @@ const CashierSales = () => {
     }
   }
 
-  // async function printBill(salesOrderId) {
-  //   console.log(salesOrderId);
-  //   try {
-  //     // Fetch the bill PDF from the server
-  //     const response = await axios.get(`${base_url}user/print/bill/${salesOrderId}`);
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
 
   async function printBill(salesOrderId) {
     try {
@@ -309,82 +274,3 @@ const CashierSales = () => {
 };
 
 export default CashierSales;
-
-// import React, { useEffect, useState, useCallback } from 'react'
-// import { base_url } from '../utils/baseUrl'
-// import axios from 'axios'
-// import _ from 'lodash'
-
-// const CashierSales = () => {
-//   const [productNumber, setProductNumber] = useState('')
-//   const [productList, setProductList] = useState([])
-//   const [product, setProduct] = useState(null)
-//   const [error, setError] = useState(null)
-
-//   const debouncedFetchProducts = useCallback(_.debounce((number) => {
-//     const fetchProducts = async () => {
-//       try {
-//         const response = await axios.get(`${base_url}product/cashier/${number}`)
-//         console.log(response.data)
-//         const x = response.data[0]
-//         await setProduct(x)
-//         console.log(product);
-//         setError(null)
-//       } catch (err) {
-//         setError(err.message)
-//       }
-//     }
-//     fetchProducts()
-//   }, 500), []) // 500ms delay
-
-//   useEffect(() => {
-//     if (productNumber) {
-//       debouncedFetchProducts(productNumber)
-//     }
-//   }, [productNumber, debouncedFetchProducts])
-
-//   const handleProductNumberChange = (e) => {
-//     const id = e.target.value
-//     setProductNumber(id)
-//   }
-
-//   const addProductToList = (product) => {
-//     setProductList([...productList, { ...product, quantity: 1 }])
-//     setProductNumber('')
-//     setProduct(null)
-//   }
-
-//   const calculateTotal = () => {
-//     return productList.reduce((total, product) => total + product.unit_price * product.quantity, 0)
-//   }
-
-//   return (
-//     <div className="container">
-//   <div className="row">
-//     <div className="col">
-//       <input className="form-control" value={productNumber} onChange={handleProductNumberChange} placeholder="Enter product number" />
-//       {error && <p className="text-danger">Error: {error}</p>}
-//       {product && (
-//         <ul className="list-group">
-//           <li className="list-group-item" key={product.number} onClick={() => addProductToList(product)}>
-//             {product.p_title} - {product.unit_price}
-//           </li>
-//         </ul>
-//       )}
-//       <ul className="list-group">
-//         {productList.map((product) => (
-//           <li className="list-group-item" key={product.number}>
-//             {product.p_title} - Quantity: {product.quantity} - Price: {product.unit_price}
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//     <div className="col text-right">
-//       <p>Total: {calculateTotal()}</p>
-//     </div>
-//   </div>
-// </div>
-//   )
-// }
-
-// export default CashierSales

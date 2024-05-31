@@ -31,6 +31,8 @@ import CashierSales from "./cashier/CashierSales";
 import EditProduct from "./pages/EditProduct";
 import EditSupplier from "./pages/EditSupplier";
 import Sales from "./pages/Sales";
+import DashboardPowerBI from './pages/DashboardPowerBI'
+import CashierSalesList from "./cashier/CashierSalesList";
 
 const user = JSON.parse(localStorage.getItem("user"))
 console.log(user);
@@ -47,13 +49,14 @@ function App() {
         <Route path="/cashier" element={(user?.isAdmin === "admin" || user?.isAdmin === "cashier") ? <CashierMainLayout /> : <Login/>}>
           <Route index element={<CashierDashboard />} />
           <Route path="sales" element={<CashierSales/>}/>
+          <Route path="sales-list" element={<CashierSalesList/>}/>
           
           <Route path="cashier-enquiries" element={<CashierEnquiries />} />
         </Route>
 
 
         <Route path="/admin" element={user?.isAdmin === "admin" ? <MainLayout /> : <Login/>}>
-          <Route index element={<Dashboard />} />
+          <Route index element={<DashboardPowerBI />} />
           <Route path="enquiries" element={<Enquiries />} />
           {/* <Route path="enquiries/:id" element={<ViewEnq />} /> */}
           {/* <Route path="blog-list" element={<Bloglist />} />

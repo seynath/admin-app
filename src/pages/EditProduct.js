@@ -146,6 +146,7 @@ const EditProduct = () => {
             formData.append("attributes", JSON.stringify(values.attributes));
             console.log(formData);
             dispatch(updateProduct({ id, formData }));
+            // alert({values});
           },
         });
         
@@ -260,6 +261,7 @@ const EditProduct = () => {
                 placeholder="Select Size"
                 value={attribute.size}
                 onChange={(e) => handleAttributeChange(idx, e)}
+                required
               >
                 <option value="">Select Size</option>
                 {sizeState.map((i, j) => (
@@ -275,6 +277,7 @@ const EditProduct = () => {
                 placeholder="Select Color"
                 value={attribute.color}
                 onChange={(e) => handleAttributeChange(idx, e)}
+                required
               >
                 <option value="">Select Color</option>
                 {colorState.map((i, j) => (
@@ -290,6 +293,7 @@ const EditProduct = () => {
                 placeholder="Quantity"
                 value={attribute.quantity}
                 onChange={(e) => handleAttributeChange(idx, e)}
+                required
               />
               <input
                 type="number"
@@ -297,6 +301,7 @@ const EditProduct = () => {
                 placeholder="Price"
                 value={attribute.price}
                 onChange={(e) => handleAttributeChange(idx, e)}
+                required
               />
               <input
                 type="number"

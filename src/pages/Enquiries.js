@@ -25,11 +25,10 @@ const columns = [
     title: "Mobile",
     dataIndex: "mobile",
   },
-{
+  {
     title: "Enquiry MEssage",
     dataIndex: "message",
-}
-  ,
+  },
   {
     title: "Status",
     dataIndex: "status",
@@ -44,7 +43,7 @@ const columns = [
 const Enquiries = () => {
   const [open, setOpen] = useState(false);
   const [enqId, setenqId] = useState("");
-  const [enqState,setEnqState] = useState([])
+  const [enqState, setEnqState] = useState([]);
   const showModal = (e) => {
     setOpen(true);
     setenqId(e);
@@ -69,12 +68,7 @@ const Enquiries = () => {
   const hideModal = () => {
     setOpen(false);
   };
-  useEffect(() => {
-    // dispatch(resetState());
-    // dispatch(getEnquiries());
-    EnquiriesList();
-  }, []);
-  // const enqState = useSelector((state) => state.enquiry.enquiries);
+ 
   const data1 = [];
   for (let i = 0; i < enqState.length; i++) {
     data1.push({
@@ -88,10 +82,16 @@ const Enquiries = () => {
         <>
           <select
             name=""
-            defaultValue={enqState[i].enquiry_status ? enqState[i].enquiry_status : "Submitted"}
+            defaultValue={
+              enqState[i].enquiry_status
+                ? enqState[i].enquiry_status
+                : "Submitted"
+            }
             className="form-control form-select"
             id=""
-            onChange={(e) => setEnquiryStatus(e.target.value, enqState[i].enquiry_id)}
+            onChange={(e) =>
+              setEnquiryStatus(e.target.value, enqState[i].enquiry_id)
+            }
           >
             <option value="Submitted">Submitted</option>
             <option value="Contacted">Contacted</option>
@@ -122,7 +122,10 @@ const Enquiries = () => {
 
   const changeStatus = async (data) => {
     try {
-      const response = await axios.post(`${base_url}enquiry/change-status`, data);
+      const response = await axios.post(
+        `${base_url}enquiry/change-status`,
+        data
+      );
       console.log(response);
 
       if (response.status === 204) {
@@ -137,31 +140,38 @@ const Enquiries = () => {
   const setEnquiryStatus = (e, i) => {
     console.log(e, i);
     const data = { id: i, enqData: e };
-    changeStatus(data)
+    changeStatus(data);
     // dispatch(updateAEnquiry(data));
   };
 
-
   const deleteEnq = (id) => {
     // dispatch(deleteAEnquiry(e));
-console.log(id);
-    axios.delete(`${base_url}enquiry/${id}`,config)
-    .then(
-      (response) => {
-        console.log(response);
-        if (response.status === 204) {
-          console.log("Deleted");
-        } else {
-          // Handle error
-        }
-      }
-    )
+    console.log(id);
+    axios.delete(`${base_url}enquiry/${id}`, config).then((response) => {
+      console.log(response);
+      if (response.status === 204) {
+        console.log("Deleted");
+        //refresh
+        window.location.reload()
+        
 
+
+        // EnquiriesList();
+      } else {
+        // Handle error
+      }
+    });
 
     setOpen(false);
-    setTimeout(() => {
-    }, 100);
+    setTimeout(() => {}, 100);
   };
+
+
+  useEffect(() => {
+    // dispatch(resetState());
+    // dispatch(getEnquiries());
+    EnquiriesList();
+  }, []);
   return (
     <div>
       <h3 className="mb-4 title">Enquiries</h3>

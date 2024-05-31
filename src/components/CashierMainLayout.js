@@ -64,92 +64,17 @@ const MainLayout = () => {
               label: "Sales",
             },
             {
-              key: "Catalog",
-              icon: <AiOutlineShoppingCart className="fs-4" />,
-              label: "Manage Product",
-              children: [
-                {
-                  key: "product",
-                  icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Product",
-                },
-                {
-                  key: "list-product",
-                  icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Product List",
-                },
-                {
-                  key: "size",
-                  icon: <SiBrandfolder className="fs-4" />,
-                  label: "Size",
-                },
-                {
-                  key: "list-size",
-                  icon: <SiBrandfolder className="fs-4" />,
-                  label: "Size List ",
-                },
-                {
-                  key: "category",
-                  icon: <BiCategoryAlt className="fs-4" />,
-                  label: "Category",
-                },
-                {
-                  key: "list-category",
-                  icon: <BiCategoryAlt className="fs-4" />,
-                  label: "Category List",
-                },
-                {
-                  key: "color",
-                  icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Color",
-                },
-                {
-                  key: "list-color",
-                  icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Color List",
-                },
-              ],
+              key: "sales-list",
+              icon: <AiOutlineUser className="fs-4" />,
+              label: "Sales List",
             },
+      
             {
               key: "orders",
               icon: <FaClipboardList className="fs-4" />,
               label: "Manage Orders",
             },
-            {
-              key: "marketing",
-              icon: <RiCouponLine className="fs-4" />,
-              label: "Marketing",
-              children: [
-                {
-                  key: "coupon",
-                  icon: <ImBlog className="fs-4" />,
-                  label: "Add Coupon",
-                },
-                {
-                  key: "coupon-list",
-                  icon: <RiCouponLine className="fs-4" />,
-                  label: "Coupon List",
-                },
-              ],
-            },
-        
-            {
-              key: "enquiries",
-              icon: <FaClipboardList className="fs-4" />,
-              label: "Enquiries",
-            },
-
-            {
-              key: "suppliers",
-              icon: <FaClipboardList className="fs-4" />,
-              label: "Manage Suppliers",
-            },
-         
-            {
-              key: "reports",
-              icon: <FaClipboardList className="fs-4" />,
-              label: "Analytical Reports",
-            },
+    
           ]}
         />
       </Sider>
@@ -193,14 +118,21 @@ const MainLayout = () => {
                 aria-expanded="false"
               >
                 <h5 className="mb-0">Cashier</h5>
-                <p className="mb-0">admin@admin.com</p>
+                <p className="mb-0">cashier@cashier.com</p>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
                   <Link
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
+                    onClick={() => {
+                      // Remove the user and tokens from local storage
+                      localStorage.removeItem("user");
+                      localStorage.removeItem("token");
+
+                      // Refresh the page
+                      window.location.href = "/";
+                    }}
                   >
                     View Profile
                   </Link>
