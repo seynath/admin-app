@@ -30,6 +30,7 @@
     "react-toastify": "^10.0.4",
     "react-widgets": "^5.8.4",
     "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5",
     "yup": "^1.4.0"
   },
   "scripts": {

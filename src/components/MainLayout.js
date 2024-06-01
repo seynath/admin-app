@@ -190,6 +190,18 @@ const MainLayout = () => {
               key: "reports",
               icon: <FaClipboardList className="fs-4" />,
               label: "Analytical Reports",
+              children:[
+                {
+                  key: "sales-report",
+                  icon: <FaClipboardList className="fs-4" />,
+                  label: "Sales Report",
+                },
+                {
+                  key: "inventory-report",
+                  icon: <FaClipboardList className="fs-4" />,
+                  label: "Inventory Report",
+                },
+              ]
             },
           ]}
         />

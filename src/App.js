@@ -33,6 +33,8 @@ import EditSupplier from "./pages/EditSupplier";
 import Sales from "./pages/Sales";
 import DashboardPowerBI from './pages/DashboardPowerBI'
 import CashierSalesList from "./cashier/CashierSalesList";
+import SalesReport from "./reports/SalesReport";
+import InventoryReport from "./reports/InventoryReport";
 
 const user = JSON.parse(localStorage.getItem("user"))
 console.log(user);
@@ -88,6 +90,8 @@ function App() {
           <Route path="list-supplier" element={<SupplierList/>} />
           <Route path="edit-supplier/:id" element={<EditSupplier/>} />
           <Route path="reports" element={<Reports/>} />
+          <Route path="sales-report" element={<SalesReport/>} />
+          <Route path="inventory-report" element={<InventoryReport/>} />
         </Route>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
