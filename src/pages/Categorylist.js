@@ -10,6 +10,9 @@ import {
   resetState,
 } from "../features/pcategory/pcategorySlice";
 import CustomModal from "../components/CustomModal";
+import { base_url } from "../utils/baseUrl";
+import { config } from "../utils/axiosconfig";
+import axios from "axios";
 
 const columns = [
   {
@@ -55,7 +58,7 @@ const Categorylist = () => {
       action: (
         <>
           <Link
-            to={`/admin/category/${pCatStat[i].cat_id}`}
+            to={`/admin/edit-category/${pCatStat[i].cat_id}`}
             className=" fs-3 text-danger"
           >
             <BiEdit />
@@ -70,12 +73,24 @@ const Categorylist = () => {
       ),
     });
   }
-  const deleteCategory = (e) => {
-    dispatch(deleteAProductCategory(e));
-    setOpen(false);
-    setTimeout(() => {
-      dispatch(getCategories());
-    }, 100);
+  const deleteCategory = async(e) => {
+
+    const id =e;
+    axios.delete(`${base_url}category/${id}`,config)
+    .then(
+      (response)=>{
+        console.log(response.data);
+        setOpen(false);
+        setTimeout(() => {
+          dispatch(getCategories());
+        }, 100);
+      }
+    ).catch(
+      (error)=>{
+        console.log(error);
+      }
+    
+    )
   };
   return (
     <div>

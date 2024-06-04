@@ -20,6 +20,11 @@ import { GrUserAdmin } from "react-icons/gr";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { FaBox } from "react-icons/fa";
+import { GiTalk } from "react-icons/gi";
+import { FaPeopleCarry } from "react-icons/fa";
+import { TbReportMoney } from "react-icons/tb";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
@@ -28,6 +33,11 @@ const MainLayout = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+
+      const user = JSON.parse(localStorage.getItem("user"));
+      // if (!user) {
+      //   navigate("/");
+      // }
 
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
@@ -110,7 +120,7 @@ const MainLayout = () => {
             },
             {
               key: "orders",
-              icon: <FaClipboardList className="fs-4" />,
+              icon: <FaBox  className="fs-4" />,
               label: "Manage Orders",
             },
             {
@@ -164,13 +174,13 @@ const MainLayout = () => {
             // },
             {
               key: "enquiries",
-              icon: <FaClipboardList className="fs-4" />,
+              icon: <GiTalk  className="fs-4" />,
               label: "Enquiries",
             },
 
             {
               key: "suppliers",
-              icon: <FaClipboardList className="fs-4" />,
+              icon: <FaPeopleCarry className="fs-4" />,
               label: "Manage Suppliers",
               children:[
                 {
@@ -188,7 +198,7 @@ const MainLayout = () => {
 
             {
               key: "reports",
-              icon: <FaClipboardList className="fs-4" />,
+              icon: <TbReportMoney  className="fs-4" />,
               label: "Analytical Reports",
               children:[
                 {
@@ -222,6 +232,7 @@ const MainLayout = () => {
             }
           )}
           <div className="d-flex gap-4 align-items-center">
+            
             <div className="position-relative">
               <IoIosNotifications className="fs-4" />
               <span className="badge bg-warning rounded-circle p-1 position-absolute">
@@ -245,15 +256,15 @@ const MainLayout = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <h5 className="mb-0">Admin</h5>
-                <p className="mb-0">admin@admin.com</p>
+                <h5 className="mb-0">{user !== null ? user.firstname : "Admin"}</h5>
+                <p className="mb-0">{user !== null ? user.email : "Admin"}</p>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
                   <Link
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
+                    to="/admin/profile"
                   >
                     View Profile
                   </Link>

@@ -10,6 +10,9 @@ import {
   resetState,
 } from "../features/size/sizeSlice";
 import CustomModal from "../components/CustomModal";
+import axios from "axios";
+import { base_url } from "../utils/baseUrl";
+import { config } from "../utils/axiosconfig";
 
 const columns = [
   {
@@ -35,6 +38,26 @@ const Sizelist = () => {
     setSizeId(e);
   };
 
+
+  const deleteSize = async(e) =>{
+    const id = e;
+    await axios.delete(`${base_url}size/${id}`,config)
+    .then(
+      (response)=>{
+        console.log(response.data);
+        setOpen(false);
+        setTimeout(() => {
+          dispatch(getSizes());
+        }, 100);
+      }
+    ).catch(
+      (error)=>{
+        console.log(error);
+      }
+    )
+
+
+  }
   const hideModal = () => {
     setOpen(false);
   };
@@ -44,6 +67,7 @@ const Sizelist = () => {
     dispatch(getSizes());
   }, []);
   const sizeState = useSelector((state) => state.size.sizes);
+  console.log(sizeState);
   const data1 = [];
   for (let i = 0; i < sizeState.length; i++) {
     data1.push({
@@ -52,14 +76,14 @@ const Sizelist = () => {
       action: (
         <>
           <Link
-            to={`/admin/size/${sizeState[i]._id}`}
+            to={`/admin/edit-size/${sizeState[i].size_id}`}
             className=" fs-3 text-danger"
           >
             <BiEdit />
           </Link>
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"
-            onClick={() => showModal(sizeState[i]._id)}
+            onClick={() => showModal(sizeState[i].size_id)}
           >
             <AiFillDelete />
           </button>
@@ -67,17 +91,19 @@ const Sizelist = () => {
       ),
     });
   }
-  const deleteSize = (e) => {
-    dispatch(deleteASize(e));
 
-    setOpen(false);
-    setTimeout(() => {
-      dispatch(getSizes());
-    }, 100);
-  };
+  // const deleteSize = (e) => {
+  //   console.log(e);
+  //   // dispatch(deleteASize(e));
+
+  //   setOpen(false);
+  //   setTimeout(() => {
+  //     dispatch(getSizes());
+  //   }, 100);
+  // };
   return (
     <div>
-      <h3 className="mb-4 title">Brands</h3>
+      <h3 className="mb-4 title">Sizes</h3>
       <div>
         <Table columns={columns} dataSource={data1} />
       </div>

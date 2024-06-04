@@ -53,7 +53,7 @@ const Colorlist = () => {
       action: (
         <>
           <Link
-            to={`/admin/color/${colorState[i].col_code}`}
+            to={`/admin/edit-color/${colorState[i].col_code}`}
             className=" fs-3 text-danger"
           >
             <BiEdit />

@@ -14,13 +14,15 @@ const SalesReport = () => {
       const response = await axios.get(`${base_url}report/sales-report`, {
         params: { fromDate, toDate },
       });
+      console.log(response.data);
       setSales(response.data);
       setSalesData(response.data.flatMap((sale) =>
         Object.values(sale.items).map((item) => ({
           date_time: new Date(sale.date_time).toLocaleDateString(),
           total: sale.total,
           order_source: sale.order_source,
-          sales_id: sale.order_source === 'offline' ? sale.sales_id : sale.order_id,
+          // sales_id: sale.order_source === 'offline' ? sale.sales_id : sale.order_id,
+          sales_id:sale.sales_id ,
           product_id: item.product_id,
           product_title: item.product_title,
           size_name: item.size_name,
@@ -72,7 +74,7 @@ const SalesReport = () => {
             <th>Date Time</th>
             <th>Total</th>
             <th>Order Source</th>
-            <th>Sales ID</th>
+            <th>Sales/OrderID</th>
             <th>Product ID</th>
             <th>Product</th>
             <th>Size</th>

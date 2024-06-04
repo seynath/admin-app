@@ -131,6 +131,7 @@ const SupplierList = () => {
       </div>
       <Modal
         title="Supplier Details"
+        className="w-50"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -148,6 +149,7 @@ const SupplierList = () => {
       </Modal>
       <Modal
         title="Supplier Products"
+        className="w-75"
         open={isModalOpen2}
         onOk={() => setIsModalOpen2(false)}
         onCancel={() => setIsModalOpen2(false)}

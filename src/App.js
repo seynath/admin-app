@@ -35,6 +35,10 @@ import DashboardPowerBI from './pages/DashboardPowerBI'
 import CashierSalesList from "./cashier/CashierSalesList";
 import SalesReport from "./reports/SalesReport";
 import InventoryReport from "./reports/InventoryReport";
+import EditSize from "./pages/EditSize";
+import Profile from "./pages/Profile";
+import EditCategory from "./pages/EditCategory";
+import EditColor from "./pages/EditColor";
 
 const user = JSON.parse(localStorage.getItem("user"))
 console.log(user);
@@ -60,29 +64,23 @@ function App() {
         <Route path="/admin" element={user?.isAdmin === "admin" ? <MainLayout /> : <Login/>}>
           <Route index element={<DashboardPowerBI />} />
           <Route path="enquiries" element={<Enquiries />} />
-          {/* <Route path="enquiries/:id" element={<ViewEnq />} /> */}
-          {/* <Route path="blog-list" element={<Bloglist />} />
-          <Route path="blog" element={<Addblog />} />
-          <Route path="blog/:id" element={<Addblog />} />
-          <Route path="coupon-list" element={<Couponlist />} />
-          <Route path="coupon" element={<AddCoupon />} />
-          <Route path="coupon/:id" element={<AddCoupon />} />
-          <Route path="blog-category-list" element={<Blogcatlist />} />
-          <Route path="blog-category" element={<Addblogcat />} />
-          <Route path="blog-category/:id" element={<Addblogcat />} /> */}
+        
           <Route path="sales-admin" element={<Sales/>}/>
           <Route path="orders" element={<Orders />} />
           <Route path="order/:id" element={<ViewOrder />} />
           <Route path="customers" element={<Customers />} />
           <Route path="list-color" element={<Colorlist />} />
           <Route path="color" element={<Addcolor />} />
+          <Route path="edit-color" element={<EditColor />} />
           <Route path="color/:id" element={<Addcolor />} />
           <Route path="list-category" element={<Categorylist />} />
           <Route path="category" element={<Addcat />} />
+          <Route path="edit-category/:id" element={<EditCategory />} />
           <Route path="category/:id" element={<Addcat />} />
           <Route path="list-size" element={<Sizelist />} />
           <Route path="size" element={<AddSize />} />
           <Route path="size/:id" element={<AddSize />} />
+          <Route path="edit-size/:id" element={<EditSize />} />
           <Route path="list-product" element={<Productlist />} />
           <Route path="product" element={<Addproduct />} />
           <Route path="edit-product/:id" element={<EditProduct/>} />
@@ -92,6 +90,7 @@ function App() {
           <Route path="reports" element={<Reports/>} />
           <Route path="sales-report" element={<SalesReport/>} />
           <Route path="inventory-report" element={<InventoryReport/>} />
+          <Route path="profile" element={<Profile/>} />
         </Route>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
