@@ -8,9 +8,17 @@ import { Link } from "react-router-dom";
 
 const columns = [
   {
-    title: "SNo",
-    dataIndex: "key",
+    title: "Product ID",
+    dataIndex: "p_id",
+    key: "p_id",
+    sorter: (a, b) => a.p_id - b.p_id,
   },
+  {
+    title: "Image",
+    dataIndex: "image",
+    key: "image",
+  },
+
   {
     title: "Title",
     dataIndex: "title",
@@ -26,14 +34,16 @@ const columns = [
     dataIndex: "category",
     sorter: (a, b) => a.category.length - b.category.length,
   },
-  {
-    title: "Color",
-    dataIndex: "color",
-  },
+
   {
     title: "Price",
     dataIndex: "price",
     sorter: (a, b) => a.price - b.price,
+  },
+  {
+    title: "Sold",
+    dataIndex: "sold",
+    sorter: (a, b) => a.sold - b.sold,
   },
   {
     title: "Action",
@@ -78,10 +88,19 @@ const Productlist = () => {
   for (let i = 0; i < productState.length; i++) {
     data1.push({
       key: i + 1,
+      p_id: <a href={`http://localhost:3001/product/${productState[i].p_id}`}>{productState[i].p_id}</a>,
+      image:
+        <img
+          src={productState[i].image_link}
+          alt="product"
+          style={{ width: "50px", height: "50px" }}
+        />
+      ,
+      
       title: productState[i].p_title,
       brand: productState[i].brand,
-      category: productState[i].category,
-      color: productState[i].color,
+      category: productState[i].cat_name,
+      sold: productState[i].sold,
       price: `${productState[i].price}`,
       action: (
         <>

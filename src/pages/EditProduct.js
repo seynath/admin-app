@@ -218,6 +218,20 @@ const EditProduct = () => {
             {formik.touched.category && formik.errors.category}
           </div>
 
+          <div className="existing-images d-flex flex-wrap gap-3">
+
+        {productState && productState.images.map((image, index) => (
+          <div className="position-relative" key={index}>
+            <img
+              src={image.image_link}
+              alt=""
+              width={200}
+              height={200}
+            />
+          </div>
+        ))}
+      </div>
+
           <div className="bg-white border-1 p-5 text-center">
             {/* <Dropzone onDrop={(acceptedFiles) => setImages(acceptedFiles)}> */}
             <Dropzone onDrop={(acceptedFiles) => setImages(acceptedFiles)}>
