@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { login, cashierLogin } from "../features/auth/authSlice";
-import heroImg from "../images/hero2.jpeg"
+import heroImg from "../images/hero3.jpg"
 
 let schema = yup.object().shape({
   email: yup

@@ -11,6 +11,7 @@ const SalesReport = () => {
 
   useEffect(() => {
     const fetchSales = async () => {
+      console.log(fromDate);
       const response = await axios.get(`${base_url}report/sales-report`, {
         params: { fromDate, toDate },
       });

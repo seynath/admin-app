@@ -24,6 +24,8 @@ const Orders = () => {
       dataIndex: "order_id",
       key: "order_id",
       sorter: (a, b) => a.order_id - b.order_id,
+      defaultSortOrder: 'descend',
+
     },
     {
       title: "User ID",

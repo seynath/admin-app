@@ -12,6 +12,8 @@ const columns = [
   {
     title: "Enquiry ID",
     dataIndex: "enquiry_id",
+    sorter: (a, b) => a.enquiry_id - b.enquiry_id,
+    defaultSortOrder: 'descend',
   },
   {
     title: "Order ID",
@@ -30,7 +32,7 @@ const columns = [
     dataIndex: "message",
   },
   {
-    title: "Status",
+    title: "Enquiry Status",
     dataIndex: "status",
   },
 
@@ -52,7 +54,7 @@ const Enquiries = () => {
   const EnquiriesList = async (orderId) => {
     try {
       const response = await axios.get(`${base_url}enquiry/`);
-      console.log(response);
+      console.log(response.data);
 
       if (response.data) {
         setEnqState(response.data);
@@ -75,7 +77,7 @@ const Enquiries = () => {
       // key: i + 1,
       enquiry_id: enqState[i].enquiry_id,
       order_id: enqState[i].order_id,
-      message: enqState[i].message,
+      message: enqState[i].enquiry_message,
       email: enqState[i].email,
       mobile: enqState[i].mobile,
       status: (

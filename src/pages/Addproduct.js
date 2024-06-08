@@ -15,11 +15,11 @@ import { createProducts, resetState } from "../features/product/productSlice";
 import { getSizes } from "../features/size/sizeSlice";
 
 let schema = yup.object().shape({
-  title: yup.string().required("Title is Required"),
-  description: yup.string().required("Description is Required"),
+  title: yup.string().min(1).max(150).required("Title is Required"),
+  description: yup.string().min(1).max(500).required("Description is Required"),
   brand: yup.string().required("Brand is Required"),
   category: yup.number().required("Category is Required"),
-  attributes: yup.array(),
+  attributes: yup.array().required("Attribute is Required"),
 });
 
 const Addproduct = () => {
@@ -107,14 +107,22 @@ const Addproduct = () => {
       }
       formData.append("attributes", JSON.stringify(values.attributes));
       console.log(formData);
-      dispatch(createProducts(formData));
-        formik.resetForm();
+      dispatch(createProducts(formData)).then(
+        (response)=>{
+          console.log(response.payload.status);
+          if(response.payload.status === 200){
+            toast.success("Product Added Successfully!")
+            navigate('/admin/list-product')
+        }
+      }
+      )
+        // formik.resetForm();
     
-      setTimeout(() => {
-        dispatch(resetState());
-        window.location.reload()
+      // setTimeout(() => {
+      //   dispatch(resetState());
+      //   window.location.reload()
 
-      }, 2000);
+      // }, 2000);
     },
   });
 
@@ -141,6 +149,7 @@ const Addproduct = () => {
 
           <div className="mb-3">
             <ReactQuill
+            placeholder="Add Description"
               theme="snow"
               name="description"
               onChange={formik.handleChange("description")}
@@ -274,7 +283,7 @@ const Addproduct = () => {
                 value={attribute.price}
                 onChange={(e) => handleAttributeChange(idx, e)}
                 min={1}
-                max={1000000}
+                max={100000}
                 required
                 className="form-control w-100" 
               />
@@ -285,7 +294,7 @@ const Addproduct = () => {
                 value={attribute.buyingPrice}
                 onChange={(e) => handleAttributeChange(idx, e)}
                 min={1}
-                max={1000000}
+                max={100000}
                 required
                 className="form-control w-100"
               />
