@@ -11,6 +11,9 @@ const SupplierList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [supplierProducts, setSupplierProducts] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedSupplierId, setSelectedSupplierId] = useState('')
+
 
   const columns = [
     {
@@ -43,18 +46,20 @@ const SupplierList = () => {
       dataIndex: "action",
       key: "action",
       render: (text, record) => (
-        <>
-          <Button
+        <div className="d-flex" >
+          {/* <Button
             type="primary"
+            className="mx-1"
             onClick={() => {
               setSelectedSupplier(record);
               setIsModalOpen(true);
             }}
           >
             View Details
-          </Button>
+          </Button> */}
           <Button
             type="primary"
+            className="mx-1"
             onClick={() => {
               setSelectedSupplier(record);
               setIsModalOpen2(true);
@@ -64,16 +69,22 @@ const SupplierList = () => {
             View Supplier Products
           </Button>
           <Link to={`/admin/edit-supplier/${record.supplier_id}`}>
-            <Button type="primary">Edit</Button>
+            <Button type="primary"
+            className="mx-1">Edit</Button>
           </Link>
           <Button
             type="primary"
+            className="mx-1"
             danger
-            onClick={() => deleteSupplier(record.supplier_id)}
+            onClick={() => {
+              setIsModalVisible(true)
+              showDeleteConfirm(record.supplier_id)
+
+            }}
           >
             Delete
           </Button>
-        </>
+        </div>
       ),
     },
   ];
@@ -102,7 +113,6 @@ const SupplierList = () => {
   const deleteSupplier = async (supplierId) => {
     try {
       await axios.delete(`${base_url}supplier/${supplierId}`, config);
-      message.success("Supplier deleted successfully");
       getSuppliers();
     } catch (error) {
       console.log(error);
@@ -110,12 +120,26 @@ const SupplierList = () => {
     }
   };
 
+
+
+
+  const showDeleteConfirm = (supplier_id) => {
+    setIsModalVisible(true);
+    setSelectedSupplierId(supplier_id)
+  };
+
   const handleOk = () => {
-    setIsModalOpen(false);
+    deleteSupplier(selectedSupplierId)
+    setIsModalVisible(false);
+    // refresh page
+    setTimeout(()=>{
+      window.location.reload();
+
+    }, 1000)
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setIsModalVisible(false);
   };
 
   const data1 = suppliers.map((supplier) => ({
@@ -129,24 +153,7 @@ const SupplierList = () => {
       <div>
         <Table columns={columns} dataSource={data1} />
       </div>
-      <Modal
-        title="Supplier Details"
-        className="w-50"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        {selectedSupplier && (
-          <div>
-            <p>Supplier ID: {selectedSupplier.supplier_id}</p>
-            <p>Supplier Name: {selectedSupplier.supplier_name}</p>
-            <p>Supplier Email: {selectedSupplier.supplier_email}</p>
-            <p>Supplier Phone: {selectedSupplier.supplier_phone}</p>
-            <p>Supplier Address: {selectedSupplier.supplier_address}</p>
-            {/* Add more details as needed */}
-          </div>
-        )}
-      </Modal>
+  
       <Modal
         title="Supplier Products"
         className="w-75"
@@ -200,6 +207,15 @@ const SupplierList = () => {
         {supplierProducts && supplierProducts.length === 0 && (
           <p>No products for this supplier.</p>
         )}
+      </Modal>
+
+      <Modal
+        title="Delete Product"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>Are you sure you want to delete this product?</p>
       </Modal>
     </div>
   );

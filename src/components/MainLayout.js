@@ -119,9 +119,21 @@ const MainLayout = () => {
               ],
             },
             {
-              key: "orders",
+              key: "",
               icon: <FaBox  className="fs-4" />,
               label: "Manage Orders",
+              children: [
+                {
+                  key: "orders",
+                  icon: <FaBox  className="fs-4" />,
+                  label: "Orders",
+                },
+                {
+                  key: "bulk-list",
+                  icon: <FaBox  className="fs-4" />,
+                  label: "Bulk Orders",
+                },
+              ],
             },
             {
               key: "sales-admin",

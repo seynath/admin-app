@@ -39,6 +39,7 @@ import EditSize from "./pages/EditSize";
 import Profile from "./pages/Profile";
 import EditCategory from "./pages/EditCategory";
 import EditColor from "./pages/EditColor";
+import BulkOrders from "./pages/BulkOrders";
 
 const user = JSON.parse(localStorage.getItem("user"))
 console.log(user);
@@ -91,6 +92,7 @@ function App() {
           <Route path="sales-report" element={<SalesReport/>} />
           <Route path="inventory-report" element={<InventoryReport/>} />
           <Route path="profile" element={<Profile/>} />
+          <Route path="bulk-list" element={<BulkOrders/>} />
         </Route>
         <Route path="*" element={<NotFound/>}/>
       </Routes>

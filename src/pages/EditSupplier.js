@@ -3,7 +3,7 @@ import axios from "axios";
 import { Button, Form, Input, Select, Typography, Row, Col, Card } from "antd";
 import { base_url } from "../utils/baseUrl";
 import { config } from "../utils/axiosconfig";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const EditSupplier = () => {
@@ -13,6 +13,7 @@ const EditSupplier = () => {
   const [supplierDetails, setSupplierDetails] = useState({});
   const location = useLocation();
   const supplierId = location.pathname.split("/")[3];
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -111,6 +112,7 @@ console.log(updatedData);
         fetchSupplier()
         // Show success message and redirect to supplier list
         toast.success("Supplier updated successfully");
+        navigate("/admin/list-supplier")
 
       }
     } catch (error) {

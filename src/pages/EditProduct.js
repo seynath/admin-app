@@ -13,7 +13,7 @@ import { Select } from "antd";
 import Dropzone from "react-dropzone";
 import { updateProduct, resetState, getSingleProduct } from "../features/product/productSlice";
 import { getSizes } from "../features/size/sizeSlice";
-
+import axios from "axios"
 
 const EditProduct = () => {
   const dispatch = useDispatch();
@@ -145,7 +145,16 @@ const EditProduct = () => {
             }
             formData.append("attributes", JSON.stringify(values.attributes));
             console.log(formData);
-            dispatch(updateProduct({ id, formData }));
+            dispatch(updateProduct({ id, formData }))
+            .then(
+              (res) => {
+                console.log(res);
+                if (res.payload.status == 200) {
+                  toast.success("Product Updated Successfully!");
+                  navigate("/admin/list-product");
+                }
+              }
+            )
             // alert({values});
           },
         });
