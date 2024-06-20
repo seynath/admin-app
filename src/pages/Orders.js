@@ -155,8 +155,14 @@ const Orders = () => {
       `${base_url}user/order/update-order/${orderId}`,
       { status: newStatus },
       config
-    );
-    getOrders();
+    ).then(
+      (response) => {console.log(response.data)
+      getOrders();
+      }
+
+    ).catch(
+      error => console.log(error)
+    )
   };
 
   const showModal = (order) => {

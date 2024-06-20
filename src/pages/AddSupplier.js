@@ -28,12 +28,21 @@ const AddSupplier = () => {
   }, []);
 
   const validationSchema = Yup.object({
-    supplierName: Yup.string().required("Supplier name is required"),
-    supplierEmail: Yup.string()
+    supplierName: Yup.string().min(1).max(50).required("Supplier name is required"),
+    supplierEmail: Yup.string().min(1).max(50)
       .email("Invalid email address")
       .required("Supplier email is required"),
-    supplierPhone: Yup.number().min(10).required("Supplier phone is required"),
-    supplierAddress: Yup.string().required("Supplier address is required"),
+    supplierPhone: Yup.string().required("Mobile number is required")
+.matches(
+      /^[0-9]{10}$/,
+      "Mobile number must be exactly 10 digits"
+    )
+    .test(
+      "is-positive-integer",
+      "Mobile number must be a positive integer",
+      (val) => val && /^\d+$/.test(val)
+    ),
+    supplierAddress: Yup.string().min(1).max(150).required("Supplier address is required"),
     productIds: Yup.array().min(1, "At least one product is required"),
   });
 

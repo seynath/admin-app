@@ -31,12 +31,13 @@ const MainLayout = () => {
   } = theme.useToken();
   const navigate = useNavigate();
 
+  const user = JSON.parse(localStorage.getItem("user"));
 
   
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo">
+        <div className="logo bg-dark" >
           <h2 className="text-white fs-5 text-center py-3 mb-0">
             <span className="sm-logo">NF</span>
             <span className="lg-logo">Nisha Fashion</span>
@@ -58,22 +59,13 @@ const MainLayout = () => {
               icon: <AiOutlineDashboard className="fs-4" />,
               label: "Dashboard",
             },
-            {
-              key: "sales",
-              icon: <AiOutlineUser className="fs-4" />,
-              label: "Sales",
-            },
+         
             {
               key: "sales-list",
               icon: <AiOutlineUser className="fs-4" />,
               label: "Sales List",
             },
-      
-            {
-              key: "orders",
-              icon: <FaClipboardList className="fs-4" />,
-              label: "Manage Orders",
-            },
+    
     
           ]}
         />
@@ -94,13 +86,7 @@ const MainLayout = () => {
             }
           )}
           <div className="d-flex gap-4 align-items-center">
-            <div className="position-relative">
-              <IoIosNotifications className="fs-4" />
-              <span className="badge bg-warning rounded-circle p-1 position-absolute">
-                3
-              </span>
-            </div>
-
+           
             <div className="d-flex gap-3 align-items-center dropdown">
               <div>
                 {/* <img
@@ -117,12 +103,21 @@ const MainLayout = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <h5 className="mb-0">Cashier</h5>
-                <p className="mb-0">cashier@cashier.com</p>
+                <h5 className="mb-0">{user !== null ? user.firstname : "Admin"}</h5>
+                <p className="mb-0">{user !== null ? user.email : "Admin"}</p>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
                   <Link
+                    className="dropdown-item py-1 mb-1"
+                    style={{ height: "auto", lineHeight: "20px" }}
+                    to="/admin/profile"
+                  >
+                    View Profile
+                  </Link>
+                </li>
+                <li>
+                  <button
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
                     onClick={() => {
@@ -134,17 +129,8 @@ const MainLayout = () => {
                       window.location.href = "/";
                     }}
                   >
-                    View Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item py-1 mb-1"
-                    style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
-                  >
                     Signout
-                  </Link>
+                  </button>
                 </li>
               </div>
             </div>

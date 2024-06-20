@@ -50,12 +50,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/reset-password" element={<Resetpassword />} />
+        <Route path="/reset-password/:token" element={<Resetpassword />} />
         <Route path="/forgot-password" element={<Forgotpassword />} />
 
         <Route path="/cashier" element={(user?.isAdmin === "admin" || user?.isAdmin === "cashier") ? <CashierMainLayout /> : <Login/>}>
-          <Route index element={<CashierDashboard />} />
-          <Route path="sales" element={<CashierSales/>}/>
+          <Route index element={<CashierSales/>} />
           <Route path="sales-list" element={<CashierSalesList/>}/>
           
           <Route path="cashier-enquiries" element={<CashierEnquiries />} />

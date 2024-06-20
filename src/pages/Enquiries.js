@@ -105,12 +105,12 @@ const Enquiries = () => {
 
       action: (
         <>
-          <Link
+          {/* <Link
             className="ms-3 fs-3 text-danger"
             to={`/admin/enquiries/${enqState[i].enquiry_id}`}
           >
             <AiOutlineEye />
-          </Link>
+          </Link> */}
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"
             onClick={() => showModal(enqState[i].enquiry_id)}

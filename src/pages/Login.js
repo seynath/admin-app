@@ -13,7 +13,7 @@ let schema = yup.object().shape({
     .email("Email should be valid")
     .required("Email is Required"),
 
-  password: yup.string().required("Password is Required"),
+  password: yup.string().min(8).max(50).required("Password is Required"),
 });
 const Login = () => {
   const [cashier,setCashier] = useState(false)

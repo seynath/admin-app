@@ -128,11 +128,7 @@ const MainLayout = () => {
                   icon: <FaBox  className="fs-4" />,
                   label: "Orders",
                 },
-                {
-                  key: "bulk-list",
-                  icon: <FaBox  className="fs-4" />,
-                  label: "Bulk Orders",
-                },
+         
               ],
             },
             {
@@ -140,50 +136,7 @@ const MainLayout = () => {
               icon: <FaClipboardList className="fs-4" />,
               label: "Manage Sales",
             },
-            // {
-            //   key: "marketing",
-            //   icon: <RiCouponLine className="fs-4" />,
-            //   label: "Marketing",
-            //   children: [
-            //     {
-            //       key: "coupon",
-            //       icon: <ImBlog className="fs-4" />,
-            //       label: "Add Coupon",
-            //     },
-            //     {
-            //       key: "coupon-list",
-            //       icon: <RiCouponLine className="fs-4" />,
-            //       label: "Coupon List",
-            //     },
-            //   ],
-            // },
-            // {
-            //   key: "blogs",
-            //   icon: <FaBloggerB className="fs-4" />,
-            //   label: "Blogs",
-            //   children: [
-            //     {
-            //       key: "blog",
-            //       icon: <ImBlog className="fs-4" />,
-            //       label: "Add Blog",
-            //     },
-            //     {
-            //       key: "blog-list",
-            //       icon: <FaBloggerB className="fs-4" />,
-            //       label: "Blog List",
-            //     },
-            //     {
-            //       key: "blog-category",
-            //       icon: <ImBlog className="fs-4" />,
-            //       label: "Add Blog Category",
-            //     },
-            //     {
-            //       key: "blog-category-list",
-            //       icon: <FaBloggerB className="fs-4" />,
-            //       label: "Blog Category List",
-            //     },
-            //   ],
-            // },
+         
             {
               key: "enquiries",
               icon: <GiTalk  className="fs-4" />,
@@ -245,12 +198,12 @@ const MainLayout = () => {
           )}
           <div className="d-flex gap-4 align-items-center">
             
-            <div className="position-relative">
+            {/* <div className="position-relative">
               <IoIosNotifications className="fs-4" />
               <span className="badge bg-warning rounded-circle p-1 position-absolute">
                 3
               </span>
-            </div>
+            </div> */}
 
             <div className="d-flex gap-3 align-items-center dropdown">
               <div>

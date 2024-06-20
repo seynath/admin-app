@@ -3,12 +3,17 @@ import axios from "axios";
 import { base_url } from "../utils/baseUrl";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Button, Modal, Table as AntTable } from "antd";
+
 import { config } from "../utils/axiosconfig";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 const CashierSalesList = () => {
   const [sales, setSalesList] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [currentSalesId, setCurrentSalesId] = useState(null);
 
   const id = JSON.parse(localStorage.getItem("user")).user_id;
 
@@ -21,6 +26,24 @@ const CashierSalesList = () => {
       console.log(err.message);
     }
   };
+
+
+  const fetchProducts = async (salesId) => {
+    try {
+      const response = await axios.get(`${base_url}cashier/sales/products/${salesId}`, config);
+      console.log(response.data);
+      setProducts(response.data);
+      setShowModal(true);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const handleViewProducts = (salesId) => {
+    setCurrentSalesId(salesId);
+    fetchProducts(salesId);
+  };
+
 
   async function printBill(salesOrderId) {
     try {
@@ -77,6 +100,50 @@ const CashierSalesList = () => {
     }
   }
 
+
+  const columns = [
+    {
+      title: "Product Name",
+      dataIndex: "p_title",
+      key: "p_title",
+    },
+    {
+      title: "Image",
+      dataIndex: "image_link",
+      key: "p_title",
+      render: (text, record) => (
+        <img
+          src={record.image_links[0]}
+          alt={record.p_title}
+          // style={{ width: "50px" ,maxHeight:"50"}}
+          width={90}
+          height={90}
+        />
+      ),
+    },
+    {
+      title: "Size",
+      dataIndex: "size_name",
+      key: "size_name",
+    },
+    {
+      title: "Color",
+      dataIndex: "col_name",
+      key: "color_name",
+    },
+    {
+      title: "Unit Price",
+      dataIndex: "unit_price",
+      key: "unit_price",
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+  
+  ];
+
   useEffect(() => {
     fetchCashierSales();
   }, []);
@@ -88,38 +155,53 @@ const CashierSalesList = () => {
         <thead>
           <tr>
             <th scope="col">Sales ID</th>
-            <th scope="col">Total Amount</th>
+            <th scope="col">Branch ID</th>
             <th scope="col">Order Date</th>
             <th scope="col">Products</th>
+            <th scope="col">Print Bill</th>
           </tr>
         </thead>
         <tbody>
           {sales.map((sale) => (
             <tr key={sale.order_id}>
               <td>{sale.sales_id}</td>
-              <td>{sale.total_amount}</td>
-              <td>{Date(sale.date_time)}</td>
+              <td>{sale.branch_id == 1 ? "Gampaha": "Ganemulla" }</td>
+              <td>{new Date(sale.date_time).toLocaleDateString()} | {new Date(sale.date_time).toLocaleTimeString()}</td>
               <td>
-                <Link
-                  to={`/cashier/sales-list/${sale.order_id}`}
-                  className="btn btn-primary"
+              <Button
+                  type="primary"
+                  onClick={() => handleViewProducts(sale.sales_id)}
                 >
-                  View
-                </Link>
+                  View Products
+                </Button>
               </td>
               <td>
-                <button
+                <Button
                   onClick={() => {
                     printBill(sale.sales_id);
                   }}
                 >
                   Print Bill
-                </button>
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <Modal
+        title="Products"
+        visible={showModal}
+        onCancel={() => setShowModal(false)}
+        className="w-75"
+        footer={[
+          <Button key="close" onClick={() => setShowModal(false)}>
+            Close
+          </Button>,
+        ]}
+      >
+        <AntTable columns={columns} dataSource={products} rowKey="id" />
+      </Modal>
+      
     </div>
   );
 };
